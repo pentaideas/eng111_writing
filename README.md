@@ -19,9 +19,9 @@ read from the bottom up so it could reflect the action of looking up a tree.
 
 This animation is an attempt at designing that experience. 
 
-The first issue, here was that the page moves, not your head.
+The first issue, here was that the page moved, not your head.
 
-In the current version is is more like the tree grows as you read it.
+In the current version the tree grows as you read it.
 
 
 ## Rights
