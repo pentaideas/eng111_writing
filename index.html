@@ -42,7 +42,7 @@
   .byline {
     position: absolute;
     left: 50%;
-    top: 73%;
+    top: 76%; /* Fallback before the script measures the title's height. */
     transform: translate(-50%, -50%);
     text-align: center;
     font: 15px/1.55 Georgia, "Times New Roman", serif;
@@ -260,6 +260,7 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   ];
   const track = document.getElementById('scroll-track');
   const title = document.getElementById('title');
+  const byline = document.getElementById('byline');
   const verse = document.getElementById('verse');
   const replay = document.getElementById('replay');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -291,6 +292,13 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     }
   }
 
+  function alignByline() {
+    // Keep “by” 10px above the title at any screen size, including when
+    // the title wraps onto two lines. Both elements are centered.
+    const titleTop = title.getBoundingClientRect().top;
+    byline.style.top = `${titleTop - byline.offsetHeight / 2 - 10}px`;
+  }
+
   function draw() {
     queued = false;
     if (!arrived) {
@@ -302,6 +310,7 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     }
 
     title.style.top = '86%';
+    alignByline();
     // Progress grows when the reader reverses direction and scrolls UP.
     const progress = clamp((readingBottom - scrollY) / pitch, 0, words.length + .35);
     document.body.classList.toggle('reading', progress > .42);
@@ -328,6 +337,8 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   function arrive() {
     if (arrived) return;
     arrived = true;
+    title.style.top = '86%';
+    alignByline();
     document.body.classList.add('arrived');
     replay.hidden = false;
     // After reaching the foot, replace the descent track with exactly the
