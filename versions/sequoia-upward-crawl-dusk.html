@@ -428,9 +428,9 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     }
   }, { passive: true });
   window.addEventListener('keydown', (event) => {
-    if (arrived && !readingArmed &&
-        ['ArrowUp', 'PageUp', 'Home', ' '].includes(event.key) &&
-        !event.shiftKey) {
+    const goingUp = ['ArrowUp', 'PageUp', 'Home'].includes(event.key) ||
+      (event.key === ' ' && event.shiftKey);
+    if (arrived && !readingArmed && goingUp) {
       readingBottom = bottom();
       scrollTo(0, readingBottom);
       readingArmed = true;
