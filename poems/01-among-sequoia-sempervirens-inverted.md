@@ -1,7 +1,7 @@
 # Among Sequoia Sempervirens — inverted-page experiment
 
 **Reading instruction:** Start at the bottom of the poem and read upward.
-This file preserves the visual reversal shown in the supplied image.
+present center aligned
 
 a verdant firmament.  
 become  
