@@ -15,7 +15,7 @@ An' headin' to tha bahh?
 You ain’t a townie no more  
 Oh dude, you’ve changed  
 Speakin’ like ya from Cali  
-Ya sound so strange --- 
+Ya sound so strange--- 
 
 *“Oh look at me,  
 I’ve traveled wicked faR”*
