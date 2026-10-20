@@ -4,6 +4,8 @@ An archive of original drafts for eng 111.
 
 ## Poems
 
+**[Read the poems on the website](https://pentaideas.github.io/eng111_writing/)** — each poem has its own page. Both Olympic drafts are on the same page.
+
 - [Among Sequoia Sempervirens](poems/among-sequoia-sempervirens.md) — original order
 - [Among Sequoia Sempervirens (inverted page)](poems/among-sequoia-sempervirens-inverted.md) — visual experiment
 - [Boston Proper](poems/boston-proper.md)
@@ -18,7 +20,7 @@ An archive of original drafts for eng 111.
 
 ## Among Sequoia Sempervirens - Interactive upward reading
 
-**[Open the animation](https://pentaideas.github.io/eng111_writing/)** 
+**[Open a random animation](https://pentaideas.github.io/eng111_writing/versions/random.html)** 
 
 I really wanted the presentation of *Among Sequoia Sempervirens* to be 
 read from the bottom up so it could reflect the action of looking up a tree.
@@ -36,7 +38,7 @@ I have tried a few iterations, but I didn't want to throw away the earlier attem
 
 There are also three color schemes: Parchment, Forest at Dusk, and Redwood Bark. You can change the colors in any version.
 
-The main link picks a random version and color each time you open it or you can pick a version
+The animation link picks a random version and color each time you open it or you can pick a version. The main website now has a place to choose which poem to read.
 
 
 ## Rights

@@ -1,45 +1,11 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A different reading of Among Sequoia Sempervirens each visit.">
-<title>Among Sequoia Sempervirens — Begin a Reading</title>
-<script>
-(() => {
-  // Each landing-page visit independently chooses one of four animations
-  // and one of three color schemes. Explicit version links bypass this page.
-  const pages = [
-    '/eng111_writing/versions/sequoia-upward-crawl-v1.html',
-    '/eng111_writing/versions/sequoia-upward-crawl-dusk.html',
-    '/eng111_writing/versions/sequoia-upward-crawl-bark.html',
-    '/eng111_writing/versions/sequoia-upward-crawl-signature.html'
-  ];
-  const colors = ['parchment', 'dusk', 'bark'];
-  const page = pages[Math.floor(Math.random() * pages.length)];
-  const theme = colors[Math.floor(Math.random() * colors.length)];
-  // Query color overrides the visitor's previous palette preference.
-  window.location.replace(page + '?theme=' + encodeURIComponent(theme));
-})();
-</script>
-<style>
-  :root { color-scheme:light; font-family:Georgia,"Times New Roman",serif; background:#f5f4ef; color:#253028; }
-  body { margin:0; min-height:100svh; display:grid; place-items:center; padding:24px; text-align:center; }
-  h1 { font-weight:400; font-size:clamp(27px,5.5vw,45px); line-height:1.18; }
-  nav { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
-  a { color:inherit; }
-</style>
-</head>
-<body>
-<main>
-  <h1>Among Sequoia Sempervirens</h1>
-  <p>Choose a version if the automatic opening does not begin.</p>
-  <nav aria-label="Animation versions">
-    <a href="versions/sequoia-upward-crawl-v1.html">Version 1</a>
-    <a href="versions/sequoia-upward-crawl-dusk.html">Version 2</a>
-    <a href="versions/sequoia-upward-crawl-bark.html">Version 3</a>
-    <a href="versions/sequoia-upward-crawl-signature.html">Version 4</a>
-  </nav>
-</main>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Poems by Michael Penta: Among Sequoia Sempervirens, Boston Proper, and Olympic."><title>Poems — Michael Penta</title><link rel="stylesheet" href="/eng111_writing/assets/poems.css"></head>
+<body class="theme-home"><header class="site-header"><a class="site-brand" href="/eng111_writing/"><span class="site-brand__name">Michael Penta</span><span class="site-brand__sub">ENG 111 · Writing</span></a><nav class="site-nav" aria-label="Poem pages"><a href="/eng111_writing/" aria-current="page">Poems</a><a href="/eng111_writing/poems/among-sequoia-sempervirens.html">Sequoia</a><a href="/eng111_writing/poems/boston-proper.html">Boston</a><a href="/eng111_writing/poems/olympic.html">Olympic</a></nav></header><hr class="site-divider">
+<main class="index-main"><section class="index-intro" aria-labelledby="poems-heading"><p class="eyebrow">Original writing · ENG 111</p><h1 id="poems-heading">Poems.</h1><p>Three poems, presented as pages to read. Choose one below.</p></section>
+<section aria-labelledby="choose-heading"><div class="section-row"><h2 id="choose-heading">Choose a poem</h2><p>01 — 03</p></div><div class="poem-grid">
+<article class="poem-card poem-card--sequoia"><a href="/eng111_writing/poems/among-sequoia-sempervirens.html"><p class="eyebrow">01 · Sequoia</p><h3>Among Sequoia<br>Sempervirens</h3><p class="excerpt">I stand<br>at the feet<br>of giants,</p><span class="read-link">Read poem ↗</span></a></article>
+<article class="poem-card poem-card--boston"><a href="/eng111_writing/poems/boston-proper.html"><p class="eyebrow">02 · Boston</p><h3>Boston<br>Proper</h3><p class="excerpt">Hey kid! Where ya bin?</p><span class="read-link">Read poem ↗</span></a></article>
+<article class="poem-card poem-card--olympic"><a href="/eng111_writing/poems/olympic.html"><p class="eyebrow">03 · Olympic</p><h3>Olympic</h3><p class="excerpt">The morning mist<br>veils a mountain lake</p><span class="read-link">Read poem ↗</span></a></article>
+</div></section>
+<div class="index-secondary"><p><em>Among Sequoia Sempervirens</em> is also available as an <a href="/eng111_writing/versions/random.html">interactive upward reading</a>.</p><p>Also: <a href="/eng111_writing/stories/the-unlikely-death-of-marco-fragale.md">The Unlikely Death of Marco Fragale</a></p></div></main>
+<footer class="site-footer"><p>© Michael Penta. All rights reserved.</p><p><a href="/eng111_writing/">All poems</a></p></footer></body></html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A different reading of Among Sequoia Sempervirens each visit.">
+<title>Random Sequoia reading — Michael Penta</title>
+<script>
+(() => {
+  // Each landing-page visit independently chooses one of four animations
+  // and one of three color schemes. Explicit version links bypass this page.
+  const pages = [
+    '/eng111_writing/versions/sequoia-upward-crawl-v1.html',
+    '/eng111_writing/versions/sequoia-upward-crawl-dusk.html',
+    '/eng111_writing/versions/sequoia-upward-crawl-bark.html',
+    '/eng111_writing/versions/sequoia-upward-crawl-signature.html'
+  ];
+  const colors = ['parchment', 'dusk', 'bark'];
+  const page = pages[Math.floor(Math.random() * pages.length)];
+  const theme = colors[Math.floor(Math.random() * colors.length)];
+  // Query color overrides the visitor's previous palette preference.
+  window.location.replace(page + '?theme=' + encodeURIComponent(theme));
+})();
+</script>
+<style>
+  :root { color-scheme:light; font-family:Georgia,"Times New Roman",serif; background:#f5f4ef; color:#253028; }
+  body { margin:0; min-height:100svh; display:grid; place-items:center; padding:24px; text-align:center; }
+  h1 { font-weight:400; font-size:clamp(27px,5.5vw,45px); line-height:1.18; }
+  nav { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+  a { color:inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Among Sequoia Sempervirens</h1>
+  <p>Choose a version if the automatic opening does not begin, or <a href="/eng111_writing/">return to all poems</a>.</p>
+  <nav aria-label="Animation versions">
+    <a href="versions/sequoia-upward-crawl-v1.html">Version 1</a>
+    <a href="versions/sequoia-upward-crawl-dusk.html">Version 2</a>
+    <a href="versions/sequoia-upward-crawl-bark.html">Version 3</a>
+    <a href="versions/sequoia-upward-crawl-signature.html">Version 4</a>
+  </nav>
+</main>
+</body>
+</html>
