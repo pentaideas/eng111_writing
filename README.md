@@ -11,6 +11,11 @@ An archive of original drafts for eng 111.
 - [Olympic (version 2)](poems/olympic-v2.md) — clear-cut opening
 
 
+## Stories
+
+- [The Unlikely Death of Marco Fragale](stories/the-unlikely-death-of-marco-fragale.md) — [original Word document](stories/the-unlikely-death-of-marco-fragale.docx)
+
+
 ## Among Sequoia Sempervirens - Interactive upward reading
 
 **[Open the animation](https://pentaideas.github.io/eng111_writing/)** 
