@@ -12,7 +12,7 @@ An archive of original drafts for eng 111.
 
 ## Interactive upward reading
 
-**[Open the animation](index.html)** (or use the GitHub Pages URL after publishing).
+**[Open the animation](index.html)** 
 
 I really wanted the presentation of *Among Sequoia Sempervirens* to be 
 read from the bottom up so it could reflect the action of looking up a tree.
