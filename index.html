@@ -2,294 +2,273 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="An upward-reading animation of Among Sequoia Sempervirens, a poem by Michael Penta.">
-<title>Among Sequoia Sempervirens · An upward reading</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An upward-reading experience of Among Sequoia Sempervirens, a poem by Michael Penta.">
+<title>Among Sequoia Sempervirens — An Upward Reading</title>
 <style>
   :root {
     color-scheme: light;
-    font-family: Georgia, "Times New Roman", serif;
-    color: #212520;
     background: #f5f4ef;
+    color: #253028;
+    font-family: Georgia, "Times New Roman", serif;
   }
-  *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  * { box-sizing: border-box; }
+  html { overflow-anchor: none; }
   body { margin: 0; min-width: 280px; }
-  .arrival {
-    height: 112svh;
-    min-height: 620px;
-    position: relative;
-    padding: 0 24px;
+  /* The first journey is only one viewport down. The reading path is added
+     after the reader reaches the foot, so arriving never means a long, empty scroll. */
+  #scroll-track { height: 205svh; }
+  .canvas {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: #f5f4ef;
+    isolation: isolate;
   }
-  .intro-lockup {
-    position: sticky;
-    top: 0;
-    min-height: 100svh;
-    display: grid;
-    place-content: center;
-    gap: 12px;
+  .title {
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+    width: min(94vw, 660px);
     text-align: center;
-  }
-  .arrival h1 {
-    font-size: clamp(32px, 6.3vw, 58px);
+    font-size: clamp(27px, 5.5vw, 45px);
     font-weight: 400;
-    line-height: 1.12;
+    line-height: 1.18;
+    letter-spacing: -.025em;
     margin: 0;
+    z-index: 2;
   }
-  .arrival .author {
-    font: 15px/1.5 system-ui, sans-serif;
-    letter-spacing: .04em;
-    color: #627064;
-    margin: 0;
+  .byline {
+    position: absolute;
+    left: 50%;
+    top: 87%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font: 15px/1.55 Georgia, "Times New Roman", serif;
+    color: #5d6d5f;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 700ms ease;
   }
-  .down { font-size: 24px; color: #697669; margin-top: 8px; animation: breathe 2.4s ease-in-out infinite; }
-  @keyframes breathe { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
-  .poem-stage {
-    position: relative;
-    padding: 2vh 24px 8vh;
+  .arrived .byline { visibility: visible; opacity: 1; }
+  .cue {
+    position: absolute;
+    left: 50%;
+    top: 59%;
+    transform: translate(-50%, -50%);
+    font: 30px/1 system-ui, sans-serif;
+    color: #809082;
+    pointer-events: none;
+    animation: breathe 2.5s ease-in-out infinite;
+    transition: opacity 300ms ease;
+    z-index: 1;
   }
-  .poem {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 0;
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
+  .arrived .cue { display: none; }
+  @keyframes breathe { 0%, 100% { opacity: .3; } 50% { opacity: .9; } }
+  .up-cue {
+    position: absolute;
+    left: 50%;
+    top: 58%;
+    transform: translate(-50%, -50%);
+    font: 24px/1 system-ui, sans-serif;
+    color: #819283;
+    opacity: 0;
+    transition: opacity 550ms ease;
+    pointer-events: none;
   }
-  .line {
+  .arrived .up-cue { opacity: .8; }
+  .reading .up-cue { display: none; }
+  .verse-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    display: block;
+    width: 95%;
+    text-align: center;
+    font-size: clamp(19px, 3.2vw, 25px);
+    line-height: 1.35;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0);
+    filter: blur(5px);
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+  .replay {
+    position: absolute;
+    top: max(15px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    z-index: 3;
+    width: 39px;
+    height: 39px;
     display: grid;
     place-items: center;
-    height: clamp(80px, 11.5svh, 110px);
-    width: 100%;
-    position: relative;
-    text-align: center;
-    white-space: nowrap;
-    font-size: clamp(18px, 3vw, 24px);
-    line-height: 1.25;
-    font-weight: 400;
-  }
-  .line .fog,
-  .line .ink { grid-area: 1 / 1; }
-  .line .fog {
-    opacity: 0;
-    filter: blur(11px);
-    transition: opacity 350ms ease;
-    color: #727b70;
-    user-select: none;
-    pointer-events: none;
-  }
-  .has-started .line .fog { opacity: .10; }
-  .line .ink {
-    opacity: 0;
-    clip-path: inset(0 calc(100% - var(--reveal, 0%)) 0 0);
-    transition: clip-path 120ms linear, opacity 220ms ease;
-    will-change: clip-path;
-  }
-  .has-started .line .ink { opacity: 1; }
-  .line.credit { font-size: clamp(16px, 2.6vw, 20px); }
-  .line.title { font-size: clamp(18px, 3.1vw, 23px); }
-  .at-roots {
-    min-height: 12svh;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 20px 12px 35px;
-    text-align: center;
-    font: 14px/1.6 system-ui, sans-serif;
-    letter-spacing: .03em;
-    color: #667469;
-  }
-  .at-roots p { margin: 0; }
-  .tip {
-    position: fixed;
-    z-index: 2;
-    bottom: max(12px, env(safe-area-inset-bottom));
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(250, 249, 245, .92);
-    border: 1px solid #d7ddd3;
-    border-radius: 100px;
-    font: 12px/1.35 system-ui, sans-serif;
-    text-align: center;
-    color: #4c5d4e;
-    padding: 10px 15px;
-    white-space: nowrap;
-    pointer-events: none;
-    backdrop-filter: blur(6px);
-  }
-  .tip.hidden { opacity: 0; transition: opacity 250ms ease; }
-  .actions { position: fixed; z-index: 3; top: 13px; right: 13px; display: flex; gap: 8px; }
-  button {
-    font: 12px/1.25 system-ui, sans-serif;
-    border: 1px solid #cbd3c8;
-    border-radius: 100px;
-    background: rgba(250,249,245,.94);
-    color: #425444;
-    padding: 9px 13px;
+    padding: 0;
+    border: 1px solid #cbd2c9;
+    border-radius: 50%;
+    background: rgba(250, 249, 244, .85);
+    color: #526353;
+    font: 23px/1 system-ui, sans-serif;
     cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 350ms ease;
   }
-  button:hover, button:focus-visible { border-color: #879988; background: white; }
-  .footnote { padding: 36px 12px 24px; text-align: center; font: 12px/1.5 system-ui, sans-serif; color: #8a9086; }
+  .arrived .replay { visibility: visible; opacity: 1; }
+  .replay:hover, .replay:focus-visible { background: white; border-color: #879b88; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  @media (max-width: 430px) {
+    .title { font-size: clamp(25px, 7.5vw, 35px); }
+    .verse-line { font-size: clamp(18px, 4.6vw, 21px); }
+  }
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .down { animation: none; }
-    .line .fog { display: none; }
-  }
-  @media (max-width: 480px) {
-    .line { height: clamp(74px, 10.5svh, 94px); }
-    .poem-stage { padding-left: 8px; padding-right: 8px; }
-    .tip { font-size: 11px; }
+    .cue { animation: none; }
+    .verse-line { filter: none !important; }
+    .byline, .cue, .up-cue { transition: none; }
   }
 </style>
 </head>
 <body>
-  <header class="arrival" id="canopy">
-    <div class="intro-lockup">
-      <h1>Among Sequoia<br>Sempervirens</h1>
-      <p class="author">I am at the foot of the tree.</p>
-      <div class="down" aria-hidden="true">↓</div>
-    </div>
-  </header>
-  <main class="poem-stage" id="stage" aria-label="Among Sequoia Sempervirens by Michael Penta. Start at the bottom and read upward.">
-    <div class="poem" id="poem">
-      <div class="line title"><span class="fog" aria-hidden="true">Among Sequoia Sempervirens</span><span class="ink">Among Sequoia Sempervirens</span></div>
-      <div class="line credit"><span class="fog" aria-hidden="true">by</span><span class="ink">by</span></div>
-      <div class="line credit"><span class="fog" aria-hidden="true">michael penta</span><span class="ink">michael penta</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">I stand</span><span class="ink">I stand</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">at the feet</span><span class="ink">at the feet</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">of giants,</span><span class="ink">of giants,</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">our moment</span><span class="ink">our moment</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">within their</span><span class="ink">within their</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">millennia,</span><span class="ink">millennia,</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">time</span><span class="ink">time</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">layered</span><span class="ink">layered</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">beneath</span><span class="ink">beneath</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">furrowed</span><span class="ink">furrowed</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">skin;</span><span class="ink">skin;</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">Overhead,</span><span class="ink">Overhead,</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">outstretched arms</span><span class="ink">outstretched arms</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">become</span><span class="ink">become</span></div>
-      <div class="line"><span class="fog" aria-hidden="true">a verdant firmament.</span><span class="ink">a verdant firmament.</span></div>
-    </div>
-  </main>
-  <section class="at-roots" id="roots" aria-label="The beginning of the upward reading">
-    <p>At the roots.<br>Read upward. ↑</p>
-  </section>
-  <div class="actions">
-    <button id="restart" type="button" aria-label="Return to canopy and start over">Start over</button>
-    <button id="show-all" type="button">Read all</button>
+<div id="scroll-track" aria-hidden="true"></div>
+<main class="canvas" aria-label="Among Sequoia Sempervirens — an interactive upward reading">
+  <h1 class="title" id="title">Among Sequoia Sempervirens</h1>
+  <span class="cue" aria-hidden="true">↓</span>
+  <span class="up-cue" aria-hidden="true">↑</span>
+  <div class="byline" id="byline">by<br>michael penta</div>
+  <div id="verse" aria-hidden="true"></div>
+  <button class="replay" id="replay" type="button" aria-label="Start over" title="Start over" hidden>↺</button>
+  <div class="sr-only">
+    Begin by scrolling down. The title stays with you until you reach the bottom.
+    The byline then appears. Scroll upward to read the poem from its first line
+    to its last, with the title and byline remaining at the foot.
+    <p>I stand / at the feet / of giants, / our moment / within their / millennia, /
+    time / layered / beneath / furrowed / skin; / Overhead, / outstretched arms /
+    become / a verdant firmament.</p>
   </div>
-  <div class="tip" id="tip" role="status" aria-live="polite">Scroll down to the roots ↓</div>
-  <footer class="footnote">Poem © Michael Penta</footer>
+</main>
 <script>
 (() => {
-  const stage = document.getElementById('stage');
-  const roots = document.getElementById('roots');
-  const lines = [...document.querySelectorAll('.line')];
-  const tip = document.getElementById('tip');
-  const toggle = document.getElementById('show-all');
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let started = false;
-  let revealAll = false;
-  let lastScrollY = window.scrollY;
-  let pendingFrame = false;
-  let resetting = false;
-  const revealed = lines.map(() => 0);
+  'use strict';
+  const words = [
+    'I stand', 'at the feet', 'of giants,', 'our moment',
+    'within their', 'millennia,', 'time', 'layered', 'beneath',
+    'furrowed', 'skin;', 'Overhead,', 'outstretched arms',
+    'become', 'a verdant firmament.'
+  ];
+  const track = document.getElementById('scroll-track');
+  const title = document.getElementById('title');
+  const verse = document.getElementById('verse');
+  const replay = document.getElementById('replay');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lines = words.map((word) => {
+    const node = document.createElement('span');
+    node.className = 'verse-line';
+    node.textContent = word;
+    verse.appendChild(node);
+    return node;
+  });
 
-  const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
+  let arrived = false;
+  let initialBottom = 0;
+  let readingBottom = 0;
+  let pitch = 62;
+  let lastWidth = window.innerWidth;
+  let queued = false;
 
-  function update() {
-    pendingFrame = false;
-    const height = document.documentElement.scrollHeight;
-    const viewport = window.innerHeight;
-    const position = window.scrollY;
-    const isAtBottom = position + viewport >= height - Math.max(70, viewport * .12);
-    lastScrollY = position;
+  const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+  const bottom = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
 
-    if (resetting) {
-      if (position <= 1) resetting = false;
-      return;
-    }
-
-    if (!started && isAtBottom) {
-      started = true;
-      document.body.classList.add('has-started');
-    }
-
-    tip.classList.toggle('hidden', started && !isAtBottom && !revealAll);
-
-    if (!started && !revealAll) {
-      tip.textContent = 'Scroll down to the roots ↓';
-      return;
-    }
-
-    if (revealAll) {
-      tip.textContent = 'Complete poem · scroll upward to read';
+  function layout() {
+    pitch = clamp(innerHeight * .082, 45, 72);
+    if (!arrived) {
+      initialBottom = bottom();
     } else {
-      tip.textContent = isAtBottom ? 'Now scroll upward to read ↑' : 'Keep moving upward ↑';
+      // Retain the same distance for the ascent after orientation changes.
+      readingBottom = bottom();
+    }
+  }
+
+  function draw() {
+    queued = false;
+    if (!arrived) {
+      const descent = clamp(scrollY / Math.max(1, initialBottom), 0, 1);
+      // The single title travels downward with the reader.
+      title.style.top = `${47 + 31 * descent}%`;
+      if (scrollY >= initialBottom - 5 && initialBottom > 1) arrive();
+      return;
     }
 
-    lines.forEach((line, i) => {
-      let amount;
-      if (revealAll || reducedMotion) amount = 100;
-      else {
-        const rect = line.getBoundingClientRect();
-        // A line uncovers across a generous scroll distance in the lower part
-        // of the viewing window. Line positions never move independently.
-        const start = viewport * .02;
-        const finish = viewport * .36;
-        amount = 100 * clamp((rect.top - start) / (finish - start), 0, 1);
-        // Begin with the title, author, and first line visible at the roots.
-        if (i < 4 && isAtBottom) amount = 100;
-      }
-      revealed[i] = Math.max(revealed[i], amount);
-      line.style.setProperty('--reveal', `${revealed[i].toFixed(2)}%`);
+    title.style.top = '78%';
+    // Progress grows when the reader reverses direction and scrolls UP.
+    const progress = clamp((readingBottom - scrollY) / pitch, 0, words.length + 1.5);
+    document.body.classList.toggle('reading', progress > .42);
+    const origin = innerHeight * .67;
+
+    lines.forEach((node, i) => {
+      // Each new line enters immediately above the anchored title and
+      // rises steadily as new lines join below it — an upward crawl.
+      const elapsed = progress - i;
+      const y = origin - elapsed * pitch;
+      const opacity = clamp((elapsed - .12) / .75, 0, 1);
+      node.style.transform = `translate3d(-50%, ${y.toFixed(2)}px, 0)`;
+      node.style.opacity = opacity.toFixed(3);
+      if (!reducedMotion) node.style.filter = `blur(${((1 - opacity) * 5).toFixed(2)}px)`;
     });
   }
 
   function schedule() {
-    if (pendingFrame) return;
-    pendingFrame = true;
-    requestAnimationFrame(update);
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(draw);
   }
 
-  window.addEventListener('scroll', schedule, { passive: true });
-  window.addEventListener('resize', schedule);
-  document.getElementById('restart').addEventListener('click', () => {
-    resetting = true;
-    started = false;
-    revealAll = false;
-    toggle.textContent = 'Read all';
-    document.body.classList.remove('has-started');
-    lines.forEach((line, i) => {
-      revealed[i] = 0;
-      line.style.setProperty('--reveal', '0%');
-    });
-    tip.textContent = 'Scroll down to the roots ↓';
-    tip.classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'instant' });
+  function arrive() {
+    if (arrived) return;
+    arrived = true;
+    document.body.classList.add('arrived');
+    replay.hidden = false;
+    // Add the upward-reading distance only after the short descent.
+    // Preserve the foot-of-tree view when the track grows.
+    track.style.height = `${innerHeight * 2.05 + (words.length + 1.5) * pitch}px`;
+    readingBottom = bottom();
+    scrollTo(0, readingBottom);
     schedule();
-  });
-  toggle.addEventListener('click', () => {
-    revealAll = !revealAll;
-    if (revealAll) {
-      started = true;
-      document.body.classList.add('has-started');
-      toggle.textContent = 'Guided reading';
-    } else {
-      toggle.textContent = 'Read all';
-      started = false;
-      document.body.classList.remove('has-started');
-      lines.forEach((line, i) => {
-        revealed[i] = 0;
-        line.style.setProperty('--reveal', '0%');
-      });
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+  }
+
+  function startOver() {
+    arrived = false;
+    document.body.classList.remove('arrived', 'reading');
+    replay.hidden = true;
+    lines.forEach((node) => {
+      node.style.opacity = '0';
+      node.style.filter = 'blur(5px)';
+    });
+    track.style.height = '';
+    scrollTo(0, 0);
+    layout();
+    draw();
+  }
+
+  replay.addEventListener('click', startOver);
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', () => {
+    // On mobile, a toolbar collapsing should not restart the reading.
+    if (innerWidth !== lastWidth) {
+      lastWidth = innerWidth;
+      if (arrived) {
+        const progressed = (readingBottom - scrollY) / pitch;
+        pitch = clamp(innerHeight * .082, 45, 72);
+        track.style.height = `${innerHeight * 2.05 + (words.length + 1.5) * pitch}px`;
+        readingBottom = bottom();
+        scrollTo(0, Math.max(0, readingBottom - progressed * pitch));
+      } else layout();
     }
     schedule();
   });
-  update();
+  layout();
+  draw();
 })();
 </script>
 </body>
