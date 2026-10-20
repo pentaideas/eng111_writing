@@ -6,6 +6,7 @@ An archive of original drafts for eng 111.
 
 - [Among Sequoia Sempervirens](poems/among-sequoia-sempervirens.md) — original order
 - [Among Sequoia Sempervirens (inverted page)](poems/among-sequoia-sempervirens-inverted.md) — visual experiment
+- [Boston Proper](poems/boston-proper.md)
 - [Olympic (version 1)](poems/olympic-v1.md) — mountain lake opening
 - [Olympic (version 2)](poems/olympic-v2.md) — clear-cut opening
 
