@@ -1,3 +1,5 @@
+present center aligned
+
 # Among Sequoia Sempervirens
 
 *by michael penta*
