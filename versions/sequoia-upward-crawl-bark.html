@@ -14,6 +14,9 @@
   }
   * { box-sizing: border-box; }
   html { overflow-anchor: none; overscroll-behavior-y: none; }
+  /* On touchscreens, reverse reading is driven by deliberate finger movement,
+     not by the browser's rubber-band or inertial page scrolling. */
+  html.touch-reading { overflow: hidden; }
   body { margin: 0; min-width: 280px; }
   /* The first journey is only one viewport down. The reading path is added
      after the reader reaches the foot, so arriving never means a long, empty scroll. */
@@ -283,12 +286,13 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   let lastWidth = window.innerWidth;
   let lastStageHeight = stageHeight();
   let queued = false;
-  // On touchscreens, reaching the foot must not itself reveal the poem.
-  // Wait for a new, intentional upward-reading gesture after the descent ends.
+  // After reaching the foot, touch gestures directly control reading progress.
+  // This isolates the verse from momentum and elastic scrolling on phones.
   const touchDevice = window.matchMedia('(pointer: coarse)').matches ||
     navigator.maxTouchPoints > 0;
-  let readingArmed = !touchDevice;
-  let reverseTouchStartY = null;
+  let touchProgress = 0;
+  let gestureStartY = null;
+  let gestureStartProgress = 0;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const bottom = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
@@ -334,13 +338,10 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
 
     title.style.top = '86%';
     alignByline();
-    // Landing inertia, overscroll, and browser toolbar shifts can all move
-    // scrollY on a phone. None of them should expose lines before the
-    // reader starts a fresh reverse gesture.
-    if (!readingArmed) readingBottom = bottom();
-    const progress = readingArmed
-      ? clamp((readingBottom - scrollY) / pitch, 0, words.length + 1.5)
-      : 0;
+    // Mobile: only the finger's deliberate movement changes the poem.
+    // Desktop: retain the original reverse-scroll behavior.
+    const progress = touchDevice ? touchProgress
+      : clamp((readingBottom - scrollY) / pitch, 0, words.length + 1.5);
     document.body.classList.toggle('reading', progress > .42);
     // Version 3: accumulated lines gently spread upwards as the tree grows.
     // There is no exit fade: earlier words remain on the screen.
@@ -368,24 +369,30 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   function arrive() {
     if (arrived) return;
     arrived = true;
-    readingArmed = !touchDevice;
-    reverseTouchStartY = null;
+    touchProgress = 0;
+    gestureStartY = null;
     title.style.top = '86%';
     alignByline();
     document.body.classList.add('arrived');
     replay.hidden = false;
-    // Add the upward-reading distance only after the short descent.
-    // Preserve the foot-of-tree view when the track grows.
-    updateTrackHeight();
-    readingBottom = bottom();
-    scrollTo(0, readingBottom);
+    if (touchDevice) {
+      // Lock page scrolling at the foot. Expanding the scroll track and
+      // scrolling to its new bottom during a swipe causes iOS jumpiness.
+      // A new touch will move the lines instead of the document.
+      document.documentElement.classList.add('touch-reading');
+    } else {
+      updateTrackHeight();
+      readingBottom = bottom();
+      scrollTo(0, readingBottom);
+    }
     schedule();
   }
 
   function startOver() {
     arrived = false;
-    readingArmed = !touchDevice;
-    reverseTouchStartY = null;
+    touchProgress = 0;
+    gestureStartY = null;
+    document.documentElement.classList.remove('touch-reading');
     document.body.classList.remove('arrived', 'reading');
     replay.hidden = true;
     lines.forEach((node) => {
@@ -398,44 +405,57 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     draw();
   }
 
-  // On a phone, the swipe which brings you down can keep coasting after
-  // arrival. Only a NEW touch which moves down the screen (scrolling UP)
-  // unlocks the poem. Touchstart also restores the true foot if iOS
-  // rubber-banding displaced the document during the previous gesture.
+  // The swipe used to descend cannot count as reading: it began BEFORE
+  // the arrival state. A separate touchstart starts each reading gesture.
   window.addEventListener('touchstart', (event) => {
-    if (!arrived || readingArmed || event.touches.length !== 1) return;
-    if (event.target.closest?.('.edition-controls, .replay')) return;
-    reverseTouchStartY = event.touches[0].clientY;
-    readingBottom = bottom();
-    if (Math.abs(scrollY - readingBottom) > 3) scrollTo(0, readingBottom);
+    gestureStartY = null;
+    if (!touchDevice || !arrived || event.touches.length !== 1 ||
+        event.target.closest?.('.edition-controls, .replay')) return;
+    gestureStartY = event.touches[0].clientY;
+    gestureStartProgress = touchProgress;
   }, { passive: true });
+
   window.addEventListener('touchmove', (event) => {
-    if (!arrived || readingArmed || reverseTouchStartY === null ||
-        event.touches.length !== 1) return;
-    if (event.touches[0].clientY - reverseTouchStartY > 14) {
-      readingArmed = true;
-      readingBottom = bottom();
-      schedule();
-    }
-  }, { passive: true });
-  const clearTouch = () => { reverseTouchStartY = null; };
-  window.addEventListener('touchend', clearTouch, { passive: true });
-  window.addEventListener('touchcancel', clearTouch, { passive: true });
-  // Preserve wheel, trackpad, and keyboard reading on hybrid devices.
+    if (!touchDevice || !arrived || event.touches.length !== 1) return;
+    if (event.target.closest?.('.edition-controls, .replay')) return;
+    // Also cancel the remainder of the descent gesture and any native
+    // overscroll. Only a fresh gesture with a start Y can reveal words.
+    if (event.cancelable) event.preventDefault();
+    if (gestureStartY === null) return;
+    const moved = event.touches[0].clientY - gestureStartY;
+    // Dragging a finger DOWN reads UP; reversing the drag reads back down.
+    touchProgress = clamp(gestureStartProgress + moved / pitch,
+      0, words.length + 1.5);
+    schedule();
+  }, { passive: false });
+
+  const endGesture = () => { gestureStartY = null; };
+  window.addEventListener('touchend', endGesture, { passive: true });
+  window.addEventListener('touchcancel', endGesture, { passive: true });
+
+  // A keyboard or trackpad can also control a touchscreen device without
+  // unlocking the browser's native momentum scrolling.
   window.addEventListener('wheel', (event) => {
-    if (arrived && !readingArmed && event.deltaY < -3) {
-      readingBottom = bottom();
-      scrollTo(0, readingBottom);
-      readingArmed = true;
-    }
-  }, { passive: true });
+    if (!touchDevice || !arrived ||
+        event.target.closest?.('.edition-controls, .replay')) return;
+    if (event.cancelable) event.preventDefault();
+    touchProgress = clamp(touchProgress - event.deltaY / pitch,
+      0, words.length + 1.5);
+    schedule();
+  }, { passive: false });
+
   window.addEventListener('keydown', (event) => {
+    if (!touchDevice || !arrived ||
+        event.target.closest?.('.edition-controls, .replay')) return;
     const goingUp = ['ArrowUp', 'PageUp', 'Home'].includes(event.key) ||
       (event.key === ' ' && event.shiftKey);
-    if (arrived && !readingArmed && goingUp) {
-      readingBottom = bottom();
-      scrollTo(0, readingBottom);
-      readingArmed = true;
+    const goingDown = ['ArrowDown', 'PageDown', 'End'].includes(event.key) ||
+      (event.key === ' ' && !event.shiftKey);
+    if (goingUp || goingDown) {
+      event.preventDefault();
+      touchProgress = clamp(touchProgress + (goingUp ? 1 : -1),
+        0, words.length + 1.5);
+      schedule();
     }
   });
 
@@ -449,11 +469,17 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
       lastWidth = innerWidth;
       lastStageHeight = currentStageHeight;
       if (arrived) {
-        const progressed = (readingBottom - scrollY) / pitch;
-        pitch = clamp(stageHeight() * .082, 45, 72);
-        updateTrackHeight();
-        readingBottom = bottom();
-        scrollTo(0, Math.max(0, readingBottom - progressed * pitch));
+        if (touchDevice) {
+          // Keep the virtual progress after rotating the phone.
+          pitch = clamp(stageHeight() * .082, 45, 72);
+          gestureStartY = null;
+        } else {
+          const progressed = (readingBottom - scrollY) / pitch;
+          pitch = clamp(stageHeight() * .082, 45, 72);
+          updateTrackHeight();
+          readingBottom = bottom();
+          scrollTo(0, Math.max(0, readingBottom - progressed * pitch));
+        }
       } else layout();
     }
     schedule();
