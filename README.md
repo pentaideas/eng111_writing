@@ -4,10 +4,10 @@ An archive of original drafts for eng 111.
 
 ## Poems
 
-- [Among Sequoia Sempervirens](poems/01-among-sequoia-sempervirens.md) — original order
-- [Among Sequoia Sempervirens (inverted page)](poems/01-among-sequoia-sempervirens-inverted.md) — visual experiment
-- [Olympic (version 1)](poems/03-olympic-v1.md) — mountain lake opening
-- [Olympic (version 2)](poems/03-olympic-v2.md) — clear-cut opening
+- [Among Sequoia Sempervirens](poems/among-sequoia-sempervirens.md) — original order
+- [Among Sequoia Sempervirens (inverted page)](poems/among-sequoia-sempervirens-inverted.md) — visual experiment
+- [Olympic (version 1)](poems/olympic-v1.md) — mountain lake opening
+- [Olympic (version 2)](poems/olympic-v2.md) — clear-cut opening
 
 
 ## Among Sequoia Sempervirens - Interactive upward reading
