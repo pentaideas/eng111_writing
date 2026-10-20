@@ -12,13 +12,13 @@ Tha one next to Stahh?
 ’Member stealin’ those carriages  
 An' headin' to tha bahh?
 
-You ain’t a townie no more  
+You ain’t a townie  
 Ya sound so weird  
-Soundin’ like ya from Cali  
+Talkin’ like ya from Cali  
 Ya accent’s disappeared--- 
 
 *“Oh look at me,  
 I’ve traveled wicked faR”*
 
 “Stop bustin’ my balls  
-And get in the caR"
+An' get in the caR"
