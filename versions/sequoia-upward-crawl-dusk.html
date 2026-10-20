@@ -178,11 +178,42 @@
   }
   .edition-nav a[aria-current="page"] { font-weight: 650; }
 </style>
+
+<style id="palette-styles">
+:root {
+  --page-bg:#f5f4ef; --page-ink:#253028; --page-subtle:#5d6d5f;
+  --page-cue:#809082; --page-border:#cbd2c9; --page-panel:rgba(250,249,244,.94);
+  --page-hover:#e8ece5;
+}
+html, body { background:var(--page-bg) !important; color:var(--page-ink) !important; }
+.canvas { background:var(--page-bg) !important; }
+.byline { color:var(--page-subtle) !important; }
+.cue, .up-cue { color:var(--page-cue) !important; }
+.replay { border-color:var(--page-border) !important; color:var(--page-ink) !important; background:var(--page-panel) !important; }
+.replay:hover, .replay:focus-visible { border-color:var(--page-cue) !important; background:var(--page-hover) !important; }
+.edition-controls { position:absolute; z-index:8; top:max(15px,env(safe-area-inset-top)); left:max(16px,env(safe-area-inset-left)); display:flex; flex-wrap:wrap; gap:8px; align-items:flex-start; max-width:calc(100% - 82px); }
+.edition-controls .edition-nav { position:relative; top:auto; left:auto; z-index:8; color:var(--page-ink); }
+.edition-controls .edition-nav summary { border-color:var(--page-border); background:var(--page-panel); }
+.edition-controls .edition-nav .choices { border-color:var(--page-border); background:var(--page-panel); }
+.edition-controls .edition-nav a:hover, .edition-controls .edition-nav a[aria-current="page"] { background:var(--page-hover); }
+.palette-picker { display:flex; align-items:center; gap:5px; border:1px solid var(--page-border); border-radius:18px; padding:6px 9px; background:var(--page-panel); color:var(--page-ink); font:12px/1.4 system-ui,sans-serif; }
+.palette-picker label { white-space:nowrap; }
+.palette-picker select { border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; min-width:91px; max-width:134px; padding:2px; }
+.palette-picker option { color:var(--page-ink); background:var(--page-bg); }
+.palette-picker:focus-within { outline:2px solid var(--page-cue); outline-offset:2px; }
+@media (max-width:420px) {
+  .edition-controls { gap:5px; }
+  .palette-picker { padding:6px 5px; }
+  .palette-picker label { display:none; }
+  .palette-picker select { min-width:90px; max-width:110px; }
+}
+</style>
 </head>
 <body>
 <div id="scroll-track" aria-hidden="true"></div>
 <main class="canvas" aria-label="Among Sequoia Sempervirens — an interactive upward reading">
 
+  <div class="edition-controls">
   <nav class="edition-nav" aria-label="Animation versions">
     <details>
       <summary>Versions <span aria-hidden="true">▾</span></summary>
@@ -193,6 +224,15 @@
       </div>
     </details>
   </nav>
+  <div class="palette-picker">
+  <label for="palette-select">Color</label>
+  <select id="palette-select" aria-label="Color scheme">
+    <option value="parchment">Parchment</option>
+    <option value="dusk">Forest at Dusk</option>
+    <option value="bark">Redwood Bark</option>
+  </select>
+</div>
+  </div>
   <h1 class="title" id="title">Among Sequoia Sempervirens</h1>
   <span class="cue" aria-hidden="true">↓</span>
   <span class="up-cue" aria-hidden="true">↑</span>
@@ -332,6 +372,43 @@
   });
   layout();
   draw();
+})();
+</script>
+
+<script>
+(() => {
+  const palettes = {
+    parchment: { bg:'#f5f4ef', ink:'#253028', subtle:'#5d6d5f', cue:'#809082', border:'#cbd2c9', panel:'rgba(250,249,244,.94)', hover:'#e8ece5' },
+    dusk: { bg:'#182A23', ink:'#E1E8D9', subtle:'#BBCBB7', cue:'#9DB6A6', border:'#718778', panel:'rgba(34,52,43,.94)', hover:'#345141' },
+    bark: { bg:'#D5C0A1', ink:'#4A3125', subtle:'#6C4C39', cue:'#775642', border:'#A5876B', panel:'rgba(240,223,198,.94)', hover:'#E1C39F' }
+  };
+  const storageKey='sequoia-color-scheme';
+  const select=document.getElementById('palette-select');
+  const params=new URLSearchParams(location.search);
+  let stored='';
+  try { stored=localStorage.getItem(storageKey)||''; } catch (_) {}
+  const initial=params.has('theme') && palettes[params.get('theme')]
+    ? params.get('theme') : palettes[stored] ? stored : 'dusk';
+  function setColor(name, save) {
+    if(!palettes[name]) return;
+    const p=palettes[name], root=document.documentElement;
+    for(const [k,v] of Object.entries(p)) root.style.setProperty('--page-'+k,v);
+    root.style.colorScheme = name==='dusk' ? 'dark':'light';
+    select.value=name;
+    document.querySelectorAll('.edition-nav a').forEach(a=>{
+      const url=new URL(a.getAttribute('href'), location.href);
+      url.searchParams.set('theme',name);
+      a.href=url.pathname+url.search+url.hash;
+    });
+    if(save) {
+      try { localStorage.setItem(storageKey,name); } catch (_) {}
+      const url=new URL(location.href);
+      url.searchParams.set('theme',name);
+      history.replaceState(null,'',url.pathname+url.search+url.hash);
+    }
+  }
+  select.addEventListener('change',()=>setColor(select.value,true));
+  setColor(initial,false);
 })();
 </script>
 </body>
