@@ -218,10 +218,11 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     <details>
       <summary>Versions <span aria-hidden="true">▾</span></summary>
       <div class="choices">
-        <a href="/eng111_writing/">Version 1</a>
+        <a href="/eng111_writing/versions/sequoia-upward-crawl-v1.html">Version 1</a>
         <a href="/eng111_writing/versions/sequoia-upward-crawl-dusk.html" aria-current="page">Version 2</a>
         <a href="/eng111_writing/versions/sequoia-upward-crawl-bark.html">Version 3</a>
         <a href="/eng111_writing/versions/sequoia-upward-crawl-signature.html">Version 4</a>
+        <a href="/eng111_writing/" data-random>Random version and color</a>
       </div>
     </details>
   </nav>
@@ -405,7 +406,7 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     for(const [k,v] of Object.entries(p)) root.style.setProperty('--page-'+k,v);
     root.style.colorScheme = name==='dusk' ? 'dark':'light';
     select.value=name;
-    document.querySelectorAll('.edition-nav a').forEach(a=>{
+    document.querySelectorAll('.edition-nav a:not([data-random])').forEach(a=>{
       const url=new URL(a.getAttribute('href'), location.href);
       url.searchParams.set('theme',name);
       a.href=url.pathname+url.search+url.hash;
