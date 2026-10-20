@@ -13,7 +13,7 @@
     font-family: Georgia, "Times New Roman", serif;
   }
   * { box-sizing: border-box; }
-  html { overflow-anchor: none; }
+  html { overflow-anchor: none; overscroll-behavior-y: none; }
   body { margin: 0; min-width: 280px; }
   /* The first journey is only one viewport down. The reading path is added
      after the reader reaches the foot, so arriving never means a long, empty scroll. */
@@ -283,6 +283,12 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   let lastWidth = window.innerWidth;
   let lastStageHeight = stageHeight();
   let queued = false;
+  // On touchscreens, reaching the foot must not itself reveal the poem.
+  // Wait for a new, intentional upward-reading gesture after the descent ends.
+  const touchDevice = window.matchMedia('(pointer: coarse)').matches ||
+    navigator.maxTouchPoints > 0;
+  let readingArmed = !touchDevice;
+  let reverseTouchStartY = null;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const bottom = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
@@ -328,8 +334,13 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
 
     title.style.top = '86%';
     alignByline();
-    // Progress grows when the reader reverses direction and scrolls UP.
-    const progress = clamp((readingBottom - scrollY) / pitch, 0, words.length + 1.5);
+    // Landing inertia, overscroll, and browser toolbar shifts can all move
+    // scrollY on a phone. None of them should expose lines before the
+    // reader starts a fresh reverse gesture.
+    if (!readingArmed) readingBottom = bottom();
+    const progress = readingArmed
+      ? clamp((readingBottom - scrollY) / pitch, 0, words.length + 1.5)
+      : 0;
     document.body.classList.toggle('reading', progress > .42);
     // Version 2: each line is added above the earlier lines. Once revealed,
     // every line stays in place and remains fully legible.
@@ -355,6 +366,8 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   function arrive() {
     if (arrived) return;
     arrived = true;
+    readingArmed = !touchDevice;
+    reverseTouchStartY = null;
     title.style.top = '86%';
     alignByline();
     document.body.classList.add('arrived');
@@ -369,6 +382,8 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
 
   function startOver() {
     arrived = false;
+    readingArmed = !touchDevice;
+    reverseTouchStartY = null;
     document.body.classList.remove('arrived', 'reading');
     replay.hidden = true;
     lines.forEach((node) => {
@@ -380,6 +395,47 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     layout();
     draw();
   }
+
+  // On a phone, the swipe which brings you down can keep coasting after
+  // arrival. Only a NEW touch which moves down the screen (scrolling UP)
+  // unlocks the poem. Touchstart also restores the true foot if iOS
+  // rubber-banding displaced the document during the previous gesture.
+  window.addEventListener('touchstart', (event) => {
+    if (!arrived || readingArmed || event.touches.length !== 1) return;
+    if (event.target.closest?.('.edition-controls, .replay')) return;
+    reverseTouchStartY = event.touches[0].clientY;
+    readingBottom = bottom();
+    if (Math.abs(scrollY - readingBottom) > 3) scrollTo(0, readingBottom);
+  }, { passive: true });
+  window.addEventListener('touchmove', (event) => {
+    if (!arrived || readingArmed || reverseTouchStartY === null ||
+        event.touches.length !== 1) return;
+    if (event.touches[0].clientY - reverseTouchStartY > 14) {
+      readingArmed = true;
+      readingBottom = bottom();
+      schedule();
+    }
+  }, { passive: true });
+  const clearTouch = () => { reverseTouchStartY = null; };
+  window.addEventListener('touchend', clearTouch, { passive: true });
+  window.addEventListener('touchcancel', clearTouch, { passive: true });
+  // Preserve wheel, trackpad, and keyboard reading on hybrid devices.
+  window.addEventListener('wheel', (event) => {
+    if (arrived && !readingArmed && event.deltaY < -3) {
+      readingBottom = bottom();
+      scrollTo(0, readingBottom);
+      readingArmed = true;
+    }
+  }, { passive: true });
+  window.addEventListener('keydown', (event) => {
+    if (arrived && !readingArmed &&
+        ['ArrowUp', 'PageUp', 'Home', ' '].includes(event.key) &&
+        !event.shiftKey) {
+      readingBottom = bottom();
+      scrollTo(0, readingBottom);
+      readingArmed = true;
+    }
+  });
 
   replay.addEventListener('click', startOver);
   window.addEventListener('scroll', schedule, { passive: true });
