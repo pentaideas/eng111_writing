@@ -14,9 +14,12 @@
   }
   * { box-sizing: border-box; }
   html { overflow-anchor: none; overscroll-behavior-y: none; }
-  /* On touchscreens, reverse reading is driven by deliberate finger movement,
-     not by the browser's rubber-band or inertial page scrolling. */
-  html.touch-reading { overflow: hidden; }
+  /* At the roots the document stops moving. New gestures move the words,
+     not the page, so iOS bounce cannot skip or reveal lines. */
+  html.at-roots { overflow: hidden; }
+  html.at-roots .canvas { overscroll-behavior: none; }
+  /* Keep the verse hidden throughout the downward journey. */
+  body:not(.reading) .verse-line { visibility: hidden; }
   body { margin: 0; min-width: 280px; }
   /* The first journey is only one viewport down. The reading path is added
      after the reader reaches the foot, so arriving never means a long, empty scroll. */
@@ -281,39 +284,24 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
 
   let arrived = false;
   let initialBottom = 0;
-  let readingBottom = 0;
   let pitch = 62;
   let lastWidth = window.innerWidth;
   let lastStageHeight = stageHeight();
   let queued = false;
-  // After reaching the foot, touch gestures directly control reading progress.
-  // This isolates the verse from momentum and elastic scrolling on phones.
-  const touchDevice = window.matchMedia('(pointer: coarse)').matches ||
-    navigator.maxTouchPoints > 0;
-  let touchProgress = 0;
+  // One explicit state transition: DESCEND -> ROOTS -> READ.
+  // Neither arriving nor the previous swipe's momentum changes progress.
+  let readingProgress = 0;
   let gestureStartY = null;
   let gestureStartProgress = 0;
+  let rootTouchEnded = true;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const bottom = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
 
-  function updateTrackHeight() {
-    // A dynamic viewport unit keeps the available reverse-scroll distance
-    // unchanged as a phone's address/navigation bars expand and collapse.
-    const readingDistance = (words.length + 1.5) * pitch;
-    track.style.height = typeof CSS !== 'undefined' && CSS.supports('height', '100dvh')
-      ? `calc(100dvh + ${readingDistance}px)`
-      : `${innerHeight + readingDistance}px`;
-  }
-
   function layout() {
+    // Use the stable canvas height rather than the shifting mobile viewport.
     pitch = clamp(stageHeight() * .082, 45, 72);
-    if (!arrived) {
-      initialBottom = bottom();
-    } else {
-      // Retain the same distance for the ascent after orientation changes.
-      readingBottom = bottom();
-    }
+    if (!arrived) initialBottom = bottom();
   }
 
   function alignByline() {
@@ -338,10 +326,9 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
 
     title.style.top = '86%';
     alignByline();
-    // Mobile: only the finger's deliberate movement changes the poem.
-    // Desktop: retain the original reverse-scroll behavior.
-    const progress = touchDevice ? touchProgress
-      : clamp((readingBottom - scrollY) / pitch, 0, words.length + 1.5);
+    // Never infer reading progress from scrollY. Physical scrolling has
+    // stopped; only a NEW upward-reading gesture changes this value.
+    const progress = readingProgress;
     document.body.classList.toggle('reading', progress > .42);
     // Version 3: accumulated lines gently spread upwards as the tree grows.
     // There is no exit fade: earlier words remain on the screen.
@@ -369,30 +356,27 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   function arrive() {
     if (arrived) return;
     arrived = true;
-    touchProgress = 0;
+    readingProgress = 0;
     gestureStartY = null;
+    // The touch that finished the descent must be released first.
+    // Its bounce cannot count as the first reading gesture.
+    rootTouchEnded = !activeTouch;
     title.style.top = '86%';
     alignByline();
     document.body.classList.add('arrived');
+    document.body.classList.remove('reading');
     replay.hidden = false;
-    if (touchDevice) {
-      // Lock page scrolling at the foot. Expanding the scroll track and
-      // scrolling to its new bottom during a swipe causes iOS jumpiness.
-      // A new touch will move the lines instead of the document.
-      document.documentElement.classList.add('touch-reading');
-    } else {
-      updateTrackHeight();
-      readingBottom = bottom();
-      scrollTo(0, readingBottom);
-    }
+    document.documentElement.classList.add('at-roots');
+    // Do NOT expand the scroll track or jump to a new scroll position here.
     schedule();
   }
 
   function startOver() {
     arrived = false;
-    touchProgress = 0;
+    readingProgress = 0;
     gestureStartY = null;
-    document.documentElement.classList.remove('touch-reading');
+    rootTouchEnded = true;
+    document.documentElement.classList.remove('at-roots');
     document.body.classList.remove('arrived', 'reading');
     replay.hidden = true;
     lines.forEach((node) => {
@@ -405,58 +389,59 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     draw();
   }
 
-  // The swipe used to descend cannot count as reading: it began BEFORE
-  // the arrival state. A separate touchstart starts each reading gesture.
+  // Observe the original descent touch so that arriving halfway through a
+  // swipe can never be mistaken for beginning a reverse-reading swipe.
+  let activeTouch = false;
   window.addEventListener('touchstart', (event) => {
-    gestureStartY = null;
-    if (!touchDevice || !arrived || event.touches.length !== 1 ||
+    activeTouch = event.touches.length > 0;
+    if (!arrived || !rootTouchEnded || event.touches.length !== 1 ||
         event.target.closest?.('.edition-controls, .replay')) return;
     gestureStartY = event.touches[0].clientY;
-    gestureStartProgress = touchProgress;
+    gestureStartProgress = readingProgress;
   }, { passive: true });
 
   window.addEventListener('touchmove', (event) => {
-    if (!touchDevice || !arrived || event.touches.length !== 1) return;
+    if (!arrived || event.touches.length !== 1) return;
     if (event.target.closest?.('.edition-controls, .replay')) return;
-    // Also cancel the remainder of the descent gesture and any native
-    // overscroll. Only a fresh gesture with a start Y can reveal words.
     if (event.cancelable) event.preventDefault();
-    if (gestureStartY === null) return;
-    const moved = event.touches[0].clientY - gestureStartY;
-    // Dragging a finger DOWN reads UP; reversing the drag reads back down.
-    touchProgress = clamp(gestureStartProgress + moved / pitch,
+    if (!rootTouchEnded || gestureStartY === null) return;
+    const dragDown = event.touches[0].clientY - gestureStartY;
+    // Drag DOWN to reveal lines upward. Each new drag resumes from the
+    // previous progress; dragging up moves the reading backward.
+    readingProgress = clamp(gestureStartProgress + dragDown / pitch,
       0, words.length + 1.5);
     schedule();
   }, { passive: false });
 
-  const endGesture = () => { gestureStartY = null; };
-  window.addEventListener('touchend', endGesture, { passive: true });
-  window.addEventListener('touchcancel', endGesture, { passive: true });
+  function endTouch() {
+    activeTouch = false;
+    gestureStartY = null;
+    if (arrived) rootTouchEnded = true;
+  }
+  window.addEventListener('touchend', endTouch, { passive: true });
+  window.addEventListener('touchcancel', endTouch, { passive: true });
 
-  // A keyboard or trackpad can also control a touchscreen device without
-  // unlocking the browser's native momentum scrolling.
   window.addEventListener('wheel', (event) => {
-    if (!touchDevice || !arrived ||
-        event.target.closest?.('.edition-controls, .replay')) return;
+    if (!arrived || event.target.closest?.('.edition-controls, .replay')) return;
     if (event.cancelable) event.preventDefault();
-    touchProgress = clamp(touchProgress - event.deltaY / pitch,
+    const unit = event.deltaMode === 1 ? 16 :
+      event.deltaMode === 2 ? stageHeight() : 1;
+    readingProgress = clamp(readingProgress - event.deltaY * unit / pitch,
       0, words.length + 1.5);
     schedule();
   }, { passive: false });
 
   window.addEventListener('keydown', (event) => {
-    if (!touchDevice || !arrived ||
-        event.target.closest?.('.edition-controls, .replay')) return;
+    if (!arrived || event.target.closest?.('.edition-controls, .replay')) return;
     const goingUp = ['ArrowUp', 'PageUp', 'Home'].includes(event.key) ||
       (event.key === ' ' && event.shiftKey);
     const goingDown = ['ArrowDown', 'PageDown', 'End'].includes(event.key) ||
       (event.key === ' ' && !event.shiftKey);
-    if (goingUp || goingDown) {
-      event.preventDefault();
-      touchProgress = clamp(touchProgress + (goingUp ? 1 : -1),
-        0, words.length + 1.5);
-      schedule();
-    }
+    if (!goingUp && !goingDown) return;
+    event.preventDefault();
+    readingProgress = clamp(readingProgress + (goingUp ? 1 : -1),
+      0, words.length + 1.5);
+    schedule();
   });
 
   replay.addEventListener('click', startOver);
@@ -469,21 +454,17 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
       lastWidth = innerWidth;
       lastStageHeight = currentStageHeight;
       if (arrived) {
-        if (touchDevice) {
-          // Keep the virtual progress after rotating the phone.
-          pitch = clamp(stageHeight() * .082, 45, 72);
-          gestureStartY = null;
-        } else {
-          const progressed = (readingBottom - scrollY) / pitch;
-          pitch = clamp(stageHeight() * .082, 45, 72);
-          updateTrackHeight();
-          readingBottom = bottom();
-          scrollTo(0, Math.max(0, readingBottom - progressed * pitch));
-        }
+        // Rotation changes the distance per new gesture, not the reading.
+        pitch = clamp(stageHeight() * .082, 45, 72);
+        gestureStartY = null;
       } else layout();
     }
     schedule();
   });
+  // A reopened page should begin at the title, not a browser-restored
+  // location left by a previous visit.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (scrollY > 0) scrollTo(0, 0);
   layout();
   draw();
 })();
