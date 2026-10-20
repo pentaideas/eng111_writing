@@ -43,7 +43,7 @@
     position: absolute;
     left: 50%;
     top: 76%; /* Fallback before the script measures the title's height. */
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -100%);
     text-align: center;
     font: 15px/1.55 Georgia, "Times New Roman", serif;
     color: #BBCBB7;
@@ -293,10 +293,10 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   }
 
   function alignByline() {
-    // Keep “by” 10px above the title at any screen size, including when
-    // the title wraps onto two lines. Both elements are centered.
+    // Position the bottom of “by” 8px above the actual title's top edge.
+    // Measuring the title also handles wrapping and browser zoom.
     const titleTop = title.getBoundingClientRect().top;
-    byline.style.top = `${titleTop - byline.offsetHeight / 2 - 10}px`;
+    byline.style.top = `${titleTop - 8}px`;
   }
 
   function draw() {
@@ -316,7 +316,8 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     document.body.classList.toggle('reading', progress > .42);
     // Version 2: each line is added above the earlier lines. Once revealed,
     // every line stays in place and remains fully legible.
-    const origin = innerHeight * .62;
+    // Keep the base of the growing verse close above the author's name.
+    const origin = byline.getBoundingClientRect().top - lines[0].offsetHeight - 14;
     const spacing = Math.min(46, (innerHeight * .60) / (words.length - 1));
 
     lines.forEach((node, i) => {

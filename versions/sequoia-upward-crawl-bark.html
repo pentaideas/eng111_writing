@@ -43,7 +43,7 @@
     position: absolute;
     left: 50%;
     top: 76%; /* Fallback before the script measures the title's height. */
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -100%);
     text-align: center;
     font: 15px/1.55 Georgia, "Times New Roman", serif;
     color: #6C4C39;
@@ -293,10 +293,10 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   }
 
   function alignByline() {
-    // Keep “by” 10px above the title at any screen size, including when
-    // the title wraps onto two lines. Both elements are centered.
+    // Position the bottom of “by” 8px above the actual title's top edge.
+    // Measuring the title also handles wrapping and browser zoom.
     const titleTop = title.getBoundingClientRect().top;
-    byline.style.top = `${titleTop - byline.offsetHeight / 2 - 10}px`;
+    byline.style.top = `${titleTop - 8}px`;
   }
 
   function draw() {
@@ -316,7 +316,8 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     document.body.classList.toggle('reading', progress > .42);
     // Version 3: accumulated lines gently spread upwards as the tree grows.
     // There is no exit fade: earlier words remain on the screen.
-    const origin = innerHeight * .62;
+    // Keep the base of the growing verse close above the author's name.
+    const origin = byline.getBoundingClientRect().top - lines[0].offsetHeight - 14;
     const finalSpacing = Math.min(46, (innerHeight * .60) / (words.length - 1));
     const growth = clamp(progress / (words.length + .5), 0, 1);
     const spacing = finalSpacing * (.82 + .18 * growth);
