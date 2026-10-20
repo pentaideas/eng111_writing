@@ -284,6 +284,13 @@
       toggle.textContent = 'Guided reading';
     } else {
       toggle.textContent = 'Read all';
+      started = false;
+      document.body.classList.remove('has-started');
+      lines.forEach((line, i) => {
+        revealed[i] = 0;
+        line.style.setProperty('--reveal', '0%');
+      });
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
     }
     schedule();
   });
