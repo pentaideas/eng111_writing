@@ -3,7 +3,7 @@
 *by Michael Penta*
 
 Hey kid! Where ya bin?  
-Where’d ya get thad aahh?  
+Where’d ya get that aahh?  
 You too good forrus now?  
 Let me hear ya say caahh.
 
@@ -15,10 +15,10 @@ An' headin' to tha bahh?
 You ain’t a townie no more  
 Oh dude, you’ve changed  
 Speakin’ like ya from Cali  
-Ya sound so strange
+Ya sound so strange--- 
 
-“Oh look at me,  
-I’ve traveled wicked faR”
+*“Oh look at me,  
+I’ve traveled wicked faR”*
 
 “Stop bustin’ my balls  
 And get in the caR"
