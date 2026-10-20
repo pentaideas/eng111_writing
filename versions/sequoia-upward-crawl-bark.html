@@ -42,7 +42,7 @@
   .byline {
     position: absolute;
     left: 50%;
-    top: 87%;
+    top: 73%;
     transform: translate(-50%, -50%);
     text-align: center;
     font: 15px/1.55 Georgia, "Times New Roman", serif;
@@ -237,12 +237,12 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   <h1 class="title" id="title">Among Sequoia Sempervirens</h1>
   <span class="cue" aria-hidden="true">↓</span>
   <span class="up-cue" aria-hidden="true">↑</span>
-  <div class="byline" id="byline">by<br>michael penta</div>
+  <div class="byline" id="byline">michael penta<br>by</div>
   <div id="verse" aria-hidden="true"></div>
   <button class="replay" id="replay" type="button" aria-label="Start over" title="Start over" hidden>↺</button>
   <div class="sr-only">
     Begin by scrolling down. The title stays with you until you reach the bottom.
-    The byline then appears. Scroll upward to read the poem from its first line
+    The author and “by” appear above the title. Scroll upward to read the poem from its first line
     to its last, with the title and byline remaining at the foot.
     <p>I stand / at the feet / of giants, / our moment / within their / millennia, /
     time / layered / beneath / furrowed / skin; / Overhead, / outstretched arms /
@@ -296,18 +296,18 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     if (!arrived) {
       const descent = clamp(scrollY / Math.max(1, initialBottom), 0, 1);
       // The single title travels downward with the reader.
-      title.style.top = `${47 + 31 * descent}%`;
+      title.style.top = `${47 + 39 * descent}%`;
       if (scrollY >= initialBottom - 5 && initialBottom > 1) arrive();
       return;
     }
 
-    title.style.top = '78%';
+    title.style.top = '86%';
     // Progress grows when the reader reverses direction and scrolls UP.
     const progress = clamp((readingBottom - scrollY) / pitch, 0, words.length + 1.5);
     document.body.classList.toggle('reading', progress > .42);
     // Version 3: accumulated lines gently spread upwards as the tree grows.
     // There is no exit fade: earlier words remain on the screen.
-    const origin = innerHeight * .71;
+    const origin = innerHeight * .62;
     const finalSpacing = Math.min(46, (innerHeight * .60) / (words.length - 1));
     const growth = clamp(progress / (words.length + .5), 0, 1);
     const spacing = finalSpacing * (.82 + .18 * growth);
