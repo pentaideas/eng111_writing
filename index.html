@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="An upward-reading animation of Among Sequoia Sempervirens, a poem by Michael Penta.">
+<title>Among Sequoia Sempervirens · An upward reading</title>
+<style>
+  :root {
+    color-scheme: light;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #212520;
+    background: #f5f4ef;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; min-width: 280px; }
+  .arrival {
+    height: 92svh;
+    min-height: 510px;
+    display: grid;
+    place-content: center;
+    gap: 22px;
+    text-align: center;
+    padding: 48px 24px;
+  }
+  .eyebrow {
+    font: 600 11px/1.5 system-ui, sans-serif;
+    letter-spacing: .19em;
+    text-transform: uppercase;
+    color: #697669;
+  }
+  .arrival h1 {
+    font-size: clamp(30px, 6vw, 52px);
+    font-weight: 400;
+    line-height: 1.18;
+    margin: 0;
+  }
+  .arrival p { font: 15px/1.65 system-ui, sans-serif; color: #627064; margin: 0; }
+  .down { font-size: 26px; color: #697669; margin-top: 12px; animation: breathe 2.4s ease-in-out infinite; }
+  @keyframes breathe { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+  .poem-stage {
+    position: relative;
+    padding: 4vh 24px 8vh;
+  }
+  .poem-stage::before {
+    content: "";
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, #d4d8cf 18%, #d4d8cf 82%, transparent);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    pointer-events: none;
+    opacity: .55;
+  }
+  .poem {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .line {
+    display: grid;
+    place-items: center;
+    height: clamp(80px, 11.5svh, 110px);
+    width: 100%;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    font-size: clamp(18px, 3vw, 24px);
+    line-height: 1.25;
+    font-weight: 400;
+  }
+  .line .fog,
+  .line .ink { grid-area: 1 / 1; }
+  .line .fog {
+    opacity: 0;
+    filter: blur(11px);
+    transition: opacity 350ms ease;
+    color: #727b70;
+    user-select: none;
+    pointer-events: none;
+  }
+  .has-started .line .fog { opacity: .12; }
+  .line .ink {
+    visibility: hidden;
+    opacity: 0;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(var(--reveal, 0%) - 16%), transparent calc(var(--reveal, 0%) + 12%));
+    mask-image: linear-gradient(to right, #000 calc(var(--reveal, 0%) - 16%), transparent calc(var(--reveal, 0%) + 12%));
+  }
+  .has-started .line .ink { visibility: visible; opacity: 1; }
+  .line.credit { font-size: clamp(16px, 2.6vw, 20px); }
+  .line.title { font-size: clamp(18px, 3.1vw, 23px); }
+  .at-roots {
+    min-height: 12svh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px 12px 35px;
+    text-align: center;
+    font: 14px/1.6 system-ui, sans-serif;
+    letter-spacing: .03em;
+    color: #667469;
+  }
+  .at-roots p { margin: 0; }
+  .tip {
+    position: fixed;
+    z-index: 2;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(250, 249, 245, .92);
+    border: 1px solid #d7ddd3;
+    border-radius: 100px;
+    font: 12px/1.35 system-ui, sans-serif;
+    text-align: center;
+    color: #4c5d4e;
+    padding: 10px 15px;
+    white-space: nowrap;
+    pointer-events: none;
+    backdrop-filter: blur(6px);
+  }
+  .tip.hidden { opacity: 0; transition: opacity 250ms ease; }
+  .actions { position: fixed; z-index: 3; top: 13px; right: 13px; display: flex; gap: 8px; }
+  button {
+    font: 12px/1.25 system-ui, sans-serif;
+    border: 1px solid #cbd3c8;
+    border-radius: 100px;
+    background: rgba(250,249,245,.94);
+    color: #425444;
+    padding: 9px 13px;
+    cursor: pointer;
+  }
+  button:hover, button:focus-visible { border-color: #879988; background: white; }
+  .footnote { padding: 36px 12px 24px; text-align: center; font: 12px/1.5 system-ui, sans-serif; color: #8a9086; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .down { animation: none; }
+    .line .fog { display: none; }
+  }
+  @media (max-width: 480px) {
+    .line { height: clamp(74px, 10.5svh, 94px); }
+    .poem-stage { padding-left: 8px; padding-right: 8px; }
+    .tip { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+  <header class="arrival" id="canopy">
+    <div class="eyebrow">An upward reading</div>
+    <h1>Begin at the foot<br>of the tree.</h1>
+    <p>Scroll down to find the poem's beginning.<br>Then turn around and read upward.</p>
+    <div class="down" aria-hidden="true">↓</div>
+  </header>
+  <main class="poem-stage" id="stage" aria-label="Among Sequoia Sempervirens by Michael Penta. Start at the bottom and read upward.">
+    <div class="poem" id="poem">
+      <div class="line title"><span class="fog" aria-hidden="true">Among Sequoia Sempervirens</span><span class="ink">Among Sequoia Sempervirens</span></div>
+      <div class="line credit"><span class="fog" aria-hidden="true">by</span><span class="ink">by</span></div>
+      <div class="line credit"><span class="fog" aria-hidden="true">michael penta</span><span class="ink">michael penta</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">I stand</span><span class="ink">I stand</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">at the feet</span><span class="ink">at the feet</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">of giants,</span><span class="ink">of giants,</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">our moment</span><span class="ink">our moment</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">within their</span><span class="ink">within their</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">millennia,</span><span class="ink">millennia,</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">time</span><span class="ink">time</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">layered</span><span class="ink">layered</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">beneath</span><span class="ink">beneath</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">furrowed</span><span class="ink">furrowed</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">skin;</span><span class="ink">skin;</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">Overhead,</span><span class="ink">Overhead,</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">outstretched arms</span><span class="ink">outstretched arms</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">become</span><span class="ink">become</span></div>
+      <div class="line"><span class="fog" aria-hidden="true">a verdant firmament.</span><span class="ink">a verdant firmament.</span></div>
+    </div>
+  </main>
+  <section class="at-roots" id="roots" aria-label="The beginning of the upward reading">
+    <p>You're at the roots.<br>Scroll upward to uncover each line. ↑</p>
+  </section>
+  <div class="actions">
+    <button id="restart" type="button" aria-label="Return to canopy and start over">Start over</button>
+    <button id="show-all" type="button">Read all</button>
+  </div>
+  <div class="tip" id="tip" role="status" aria-live="polite">Scroll down to the roots ↓</div>
+  <footer class="footnote">Poem © Michael Penta</footer>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const roots = document.getElementById('roots');
+  const lines = [...document.querySelectorAll('.line')];
+  const tip = document.getElementById('tip');
+  const toggle = document.getElementById('show-all');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let started = false;
+  let revealAll = false;
+  let lastScrollY = window.scrollY;
+  let pendingFrame = false;
+  let resetting = false;
+  const revealed = lines.map(() => 0);
+
+  const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
+
+  function update() {
+    pendingFrame = false;
+    const height = document.documentElement.scrollHeight;
+    const viewport = window.innerHeight;
+    const position = window.scrollY;
+    const isAtBottom = position + viewport >= height - Math.max(70, viewport * .12);
+    lastScrollY = position;
+
+    if (resetting) {
+      if (position <= 1) resetting = false;
+      return;
+    }
+
+    if (!started && isAtBottom) {
+      started = true;
+      document.body.classList.add('has-started');
+    }
+
+    tip.classList.toggle('hidden', started && !isAtBottom && !revealAll);
+
+    if (!started && !revealAll) {
+      tip.textContent = 'Scroll down to the roots ↓';
+      return;
+    }
+
+    if (revealAll) {
+      tip.textContent = 'Complete poem · scroll upward to read';
+    } else {
+      tip.textContent = isAtBottom ? 'Now scroll upward to read ↑' : 'Keep moving upward ↑';
+    }
+
+    lines.forEach((line, i) => {
+      let amount;
+      if (revealAll || reducedMotion) amount = 125;
+      else {
+        const rect = line.getBoundingClientRect();
+        // A line uncovers across a generous scroll distance in the lower part
+        // of the viewing window. Line positions never move independently.
+        const start = viewport * .02;
+        const finish = viewport * .36;
+        amount = 125 * clamp((rect.top - start) / (finish - start), 0, 1);
+        // Begin with the title, author, and first line visible at the roots.
+        if (i < 4 && isAtBottom) amount = 125;
+      }
+      revealed[i] = Math.max(revealed[i], amount);
+      line.style.setProperty('--reveal', `${revealed[i].toFixed(2)}%`);
+    });
+  }
+
+  function schedule() {
+    if (pendingFrame) return;
+    pendingFrame = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  document.getElementById('restart').addEventListener('click', () => {
+    resetting = true;
+    started = false;
+    revealAll = false;
+    toggle.textContent = 'Read all';
+    document.body.classList.remove('has-started');
+    lines.forEach((line, i) => {
+      revealed[i] = 0;
+      line.style.setProperty('--reveal', '0%');
+    });
+    tip.textContent = 'Scroll down to the roots ↓';
+    tip.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    schedule();
+  });
+  toggle.addEventListener('click', () => {
+    revealAll = !revealAll;
+    if (revealAll) {
+      started = true;
+      document.body.classList.add('has-started');
+      toggle.textContent = 'Guided reading';
+    } else {
+      toggle.textContent = 'Read all';
+    }
+    schedule();
+  });
+  update();
+})();
+</script>
+</body>
+</html>
