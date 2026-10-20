@@ -128,11 +128,71 @@
     .verse-line { filter: none !important; }
     .byline, .cue, .up-cue { transition: none; }
   }
+
+  /* Small persistent switcher, separate from the poem's visual movement. */
+  .edition-nav {
+    position: absolute;
+    top: max(15px, env(safe-area-inset-top));
+    left: max(16px, env(safe-area-inset-left));
+    z-index: 6;
+    font: 13px/1.4 system-ui, sans-serif;
+    color: #405447;
+  }
+  .edition-nav summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid #cbd2c9;
+    border-radius: 18px;
+    padding: 9px 13px;
+    background: rgba(250,249,244,.94);
+  }
+  .edition-nav summary::-webkit-details-marker { display: none; }
+  .edition-nav summary:focus-visible, .edition-nav a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  .edition-nav .choices {
+    display: grid;
+    gap: 3px;
+    min-width: 170px;
+    margin-top: 7px;
+    padding: 6px;
+    border: 1px solid #cbd2c9;
+    border-radius: 12px;
+    background: #faf9f4;
+    box-shadow: 0 8px 20px rgba(0,0,0,.10);
+  }
+  .edition-nav a {
+    display: block;
+    border-radius: 8px;
+    padding: 9px 10px;
+    color: inherit;
+    text-decoration: none;
+  }
+  .edition-nav a:hover, .edition-nav a[aria-current="page"] {
+    background: #e8ece5;
+  }
+  .edition-nav a[aria-current="page"] { font-weight: 650; }
 </style>
 </head>
 <body>
 <div id="scroll-track" aria-hidden="true"></div>
 <main class="canvas" aria-label="Among Sequoia Sempervirens — an interactive upward reading">
+
+  <nav class="edition-nav" aria-label="Animation versions">
+    <details>
+      <summary>Versions <span aria-hidden="true">▾</span></summary>
+      <div class="choices">
+        <a href="/eng111_writing/" aria-current="page">Original</a>
+        <a href="/eng111_writing/versions/sequoia-upward-crawl-dusk.html">Forest at Dusk</a>
+        <a href="/eng111_writing/versions/sequoia-upward-crawl-bark.html">Redwood Bark</a>
+      </div>
+    </details>
+  </nav>
   <h1 class="title" id="title">Among Sequoia Sempervirens</h1>
   <span class="cue" aria-hidden="true">↓</span>
   <span class="up-cue" aria-hidden="true">↑</span>
