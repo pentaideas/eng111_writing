@@ -10,7 +10,7 @@ An archive of original drafts for eng 111.
 - [Olympic (version 2)](poems/03-olympic-v2.md) — clear-cut opening
 
 
-## Interactive upward reading
+## Among Sequoia Sempervirens - Interactive upward reading
 
 **[Open the animation](https://pentaideas.github.io/eng111_writing/)** 
 
