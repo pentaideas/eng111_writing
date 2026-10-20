@@ -20,7 +20,8 @@
   #scroll-track { height: 205svh; }
   .canvas {
     position: fixed;
-    inset: 0;
+    inset: 0 0 auto;
+    height: 100svh; /* Stable while a phone's browser bars open and close. */
     overflow: hidden;
     background: #182A23;
     isolation: isolate;
@@ -260,6 +261,8 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     'become', 'a verdant firmament.'
   ];
   const track = document.getElementById('scroll-track');
+  const canvas = document.querySelector('.canvas');
+  const stageHeight = () => Math.max(1, canvas.clientHeight);
   const title = document.getElementById('title');
   const byline = document.getElementById('byline');
   const verse = document.getElementById('verse');
@@ -278,13 +281,14 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   let readingBottom = 0;
   let pitch = 62;
   let lastWidth = window.innerWidth;
+  let lastStageHeight = stageHeight();
   let queued = false;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const bottom = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
 
   function layout() {
-    pitch = clamp(innerHeight * .082, 45, 72);
+    pitch = clamp(stageHeight() * .082, 45, 72);
     if (!arrived) {
       initialBottom = bottom();
     } else {
@@ -303,10 +307,13 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   function draw() {
     queued = false;
     if (!arrived) {
-      const descent = clamp(scrollY / Math.max(1, initialBottom), 0, 1);
+      // The visible viewport changes on phones as browser toolbars hide.
+      // Recalculate the real end of the descent instead of using a stale height.
+      const currentBottom = bottom();
+      const descent = clamp(scrollY / Math.max(1, currentBottom), 0, 1);
       // The single title travels downward with the reader.
       title.style.top = `${47 + 39 * descent}%`;
-      if (scrollY >= initialBottom - 5 && initialBottom > 1) arrive();
+      if (scrollY >= currentBottom - 5 && currentBottom > 1) arrive();
       return;
     }
 
@@ -319,7 +326,7 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     // every line stays in place and remains fully legible.
     // Keep the base of the growing verse close above the author's name.
     const origin = byline.getBoundingClientRect().top - lines[0].offsetHeight - 14;
-    const spacing = Math.min(46, (innerHeight * .60) / (words.length - 1));
+    const spacing = Math.min(46, (stageHeight() * .60) / (words.length - 1));
 
     lines.forEach((node, i) => {
       const entering = clamp((progress - i - .12) / .82, 0, 1);
@@ -345,7 +352,7 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     replay.hidden = false;
     // Add the upward-reading distance only after the short descent.
     // Preserve the foot-of-tree view when the track grows.
-    track.style.height = `${innerHeight * 2.05 + (words.length + 1.5) * pitch}px`;
+    track.style.height = `${stageHeight() + (words.length + 1.5) * pitch}px`;
     readingBottom = bottom();
     scrollTo(0, readingBottom);
     schedule();
@@ -368,13 +375,16 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   replay.addEventListener('click', startOver);
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', () => {
-    // On mobile, a toolbar collapsing should not restart the reading.
-    if (innerWidth !== lastWidth) {
+    // Ignore mobile browser toolbar animation; only relayout if the actual
+    // stable canvas size changes (rotation or a real window resize).
+    const currentStageHeight = stageHeight();
+    if (innerWidth !== lastWidth || Math.abs(currentStageHeight - lastStageHeight) > 2) {
       lastWidth = innerWidth;
+      lastStageHeight = currentStageHeight;
       if (arrived) {
         const progressed = (readingBottom - scrollY) / pitch;
-        pitch = clamp(innerHeight * .082, 45, 72);
-        track.style.height = `${innerHeight * 2.05 + (words.length + 1.5) * pitch}px`;
+        pitch = clamp(stageHeight() * .082, 45, 72);
+        track.style.height = `${stageHeight() + (words.length + 1.5) * pitch}px`;
         readingBottom = bottom();
         scrollTo(0, Math.max(0, readingBottom - progressed * pitch));
       } else layout();
