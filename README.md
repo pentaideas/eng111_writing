@@ -17,7 +17,7 @@ An archive of original drafts for eng 111.
 I really wanted the presentation of *Among Sequoia Sempervirens* to be 
 read from the bottom up so it could reflect the action of looking up a tree.
 
-This is an attempt at designing that experience
+This animation is an attempt at designing that experience. The issue, here is that the page moves, not your head.
 
 
 ## Rights
