@@ -18,7 +18,7 @@ Talkin’ like ya from Cali
 Ya accent’s disappeared--- 
 
 *“Oh look at me,  
-I’ve traveled wicked faR”*
+I’ve traveled hella faR”*
 
-“Stop bustin’ my balls  
-An' get in the caR"
+“It’s wicked late.  
+Let’s get in the caR”
