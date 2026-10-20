@@ -287,6 +287,15 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const bottom = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
 
+  function updateTrackHeight() {
+    // A dynamic viewport unit keeps the available reverse-scroll distance
+    // unchanged as a phone's address/navigation bars expand and collapse.
+    const readingDistance = (words.length + .35) * pitch;
+    track.style.height = typeof CSS !== 'undefined' && CSS.supports('height', '100dvh')
+      ? `calc(100dvh + ${readingDistance}px)`
+      : `${innerHeight + readingDistance}px`;
+  }
+
   function layout() {
     pitch = clamp(stageHeight() * .046, 29, 44);
     if (!arrived) {
@@ -353,7 +362,7 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     replay.hidden = false;
     // After reaching the foot, replace the descent track with exactly the
     // ascent distance. This avoids empty scrolling after the final line.
-    track.style.height = `${stageHeight() + (words.length + .35) * pitch}px`;
+    updateTrackHeight();
     readingBottom = bottom();
     scrollTo(0, readingBottom);
     schedule();
@@ -385,7 +394,7 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
       if (arrived) {
         const progressed = (readingBottom - scrollY) / pitch;
         pitch = clamp(stageHeight() * .046, 29, 44);
-        track.style.height = `${stageHeight() + (words.length + .35) * pitch}px`;
+        updateTrackHeight();
         readingBottom = bottom();
         scrollTo(0, Math.max(0, readingBottom - progressed * pitch));
       } else layout();
