@@ -1,0 +1,43 @@
+name: Sync poetry from Markdown
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'poems/*.md'
+      - 'tools/sync_poems.py'
+      - 'assets/poem-live.js'
+      - '.github/workflows/sync-poems.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: poetry-source-sync
+  cancel-in-progress: false
+
+jobs:
+  publish-poems:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Regenerate poem pages and animation text
+        run: python3 tools/sync_poems.py
+      - name: Test generated poetry
+        run: |
+          python3 tools/sync_poems.py --check
+          git diff --check
+          node --check assets/poem-live.js
+      - name: Commit generated pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add poems/among-sequoia-sempervirens.html poems/boston-proper.html poems/olympic.html
+          git add versions/sequoia-upward-crawl-v1.html versions/sequoia-upward-crawl-dusk.html
+          git add versions/sequoia-upward-crawl-bark.html versions/sequoia-upward-crawl-signature.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Sync published poems from Markdown [skip ci]"
+            git push
+          fi

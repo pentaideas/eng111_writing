@@ -41,6 +41,10 @@ There are also three color schemes: Parchment, Forest at Dusk, and Redwood Bark.
 The animation link picks a random version and color each time you open it or you can pick a version. The main website now has a place to choose which poem to read.
 
 
+## Keeping the poetry website synchronized
+
+The Markdown files in poems/ are the authoritative poem texts. When I change one, GitHub Actions regenerates its reading page and the Sequoia animation fallbacks. The reading pages and animations also read the current Markdown on each visit, so they remain current even before that regeneration finishes. To regenerate locally, run python3 tools/sync_poems.py; to check for differences, run python3 tools/sync_poems.py --check.
+
 ## Rights
 
 All works © Michael Penta. All rights reserved.
