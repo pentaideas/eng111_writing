@@ -6,7 +6,7 @@ Yesterday,
 a scrim of trees staged along the roadway  
 masked the massacre of their cousins.  
 Your gasp weighted with grief,  
-I turn to your face  
+I turned to your face  
 and your mourning  
 tightened and twisted in my stomach.
 
