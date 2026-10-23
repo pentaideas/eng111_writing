@@ -23,8 +23,10 @@ I wanted *Among Sequoia Sempervirens* to be read from the bottom up, reflecting 
 
 ### Darkness Consumes
 
-Two ways to experience the story’s growing darkness:
+Four ways to experience the story’s growing darkness:
 
+- [Lantern fades](https://pentaideas.github.io/eng111_writing/versions/marco-lantern-fades.html) — a warm glow slowly goes out.
+- [Soft tide](https://pentaideas.github.io/eng111_writing/versions/marco-soft-tide.html) — darkness rises with a softer edge.
 - [Fading light](https://pentaideas.github.io/eng111_writing/versions/marco-fading-light.html) — the page gradually darkens as you scroll.
 - [Rising darkness](https://pentaideas.github.io/eng111_writing/versions/marco-rising-darkness.html) — darkness fills upward from the bottom.
 

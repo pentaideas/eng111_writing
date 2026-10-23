@@ -98,3 +98,22 @@ a{color:inherit}a:focus-visible{outline:3px solid var(--focus);outline-offset:4p
 .marco-versions{display:flex;flex-wrap:wrap;gap:10px;margin:0 auto 26px;width:min(100%,680px);font:13px/1.5 system-ui,sans-serif}
 .marco-versions a{padding:10px 14px;border:1px solid var(--line);border-radius:3px;text-decoration:none}
 .marco-versions a:hover,.marco-versions a[aria-current="page"]{text-decoration:underline;text-underline-offset:4px}
+
+/* Invitation appears before the story title, including on the original experiments. */
+.marco-invitation{position:relative;margin:22px auto;width:min(100% - 40px,1032px);padding:20px 24px;background:#30221b;color:#f5e7d1;border:1px solid #9b724e;border-radius:6px}
+.marco-invitation__heading{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 20px;margin-bottom:13px}
+.marco-invitation__heading .eyebrow{color:#f2c68f;margin:0}
+.marco-invitation__heading>p:last-child{margin:0;font:13px/1.6 system-ui,sans-serif;color:#dfccb4}
+.marco-invitation .marco-versions{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;width:100%;margin:0}
+.marco-invitation .marco-choice{grid-column:span 2;min-height:44px;border-color:#8d6d54;background:#38281f;color:#f5e7d1;display:flex;flex-direction:column;justify-content:center;padding:10px 14px}
+.marco-invitation .marco-choice--lantern,.marco-invitation .marco-choice--tide{grid-column:span 3;min-height:72px;border-color:#bb8b55;background:linear-gradient(120deg,#704b2b,#33221a)}
+.marco-invitation .marco-choice--tide{background:linear-gradient(0deg,#130d0a,#57402c)}
+.marco-choice strong{font-size:16px;font-weight:550}
+.marco-choice span{margin-top:4px;color:#ecdbc3;font-size:12px}
+.marco-invitation a[aria-current="page"]{outline:2px solid #e8bc80;outline-offset:1px;text-decoration:none}
+.marco-invitation a:focus-visible{outline:3px solid #fff0da;outline-offset:3px}
+.experiment-invitation{margin:0 0 34px;padding:23px 26px;border-left:4px solid #9b724e;background:#e9e2d5}
+.experiment-invitation .eyebrow{margin:0 0 9px}
+.experiment-invitation p{font:14px/1.7 system-ui,sans-serif;margin:8px 0 0}
+.experiment-invitation a{text-underline-offset:4px;font-weight:600}
+@media(max-width:540px){.marco-invitation{padding:15px;width:calc(100% - 28px);margin:14px auto}.marco-invitation .marco-versions{grid-template-columns:1fr 1fr}.marco-invitation .marco-choice{grid-column:span 1;font-size:12px;padding:9px}.marco-invitation .marco-choice--standard{grid-column:span 2}.marco-choice strong{font-size:14px}.marco-choice span{font-size:11px}}

@@ -96,10 +96,10 @@ def regenerate_story(path):
     body = "\n".join("<p>" + html.escape(part, quote=False) + "</p>" for part in paragraphs)
     base = "/eng111_writing/"
     page = f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><script src="{base}assets/story-theme.js"></script><link rel="stylesheet" href="{base}assets/poems.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><script src="{base}assets/story-theme.js"></script><link rel="stylesheet" href="{base}assets/poems.css?v=marco-2"></head>
 <body class="theme-story"><header class="site-header"><a class="site-brand" href="{base}"><span class="site-brand__name">Michael Penta</span><span class="site-brand__sub">ENG 111 · Writing</span></a><nav class="site-nav" aria-label="Writing pages"><a href="{base}">Writing</a><a href="{base}poems/among-sequoia-sempervirens.html">Sequoia</a><a href="{base}poems/boston-proper.html">Boston</a><a href="{base}poems/olympic.html">Olympic</a><a href="{base}stories/{path.name}" aria-current="page">Marco Fragale</a></nav></header><hr class="site-divider">
-<div class="reading-hero"><div class="reading-hero__inner"><p class="eyebrow">Short story</p><h1>{title}</h1><p class="author">by {author}</p></div></div>
-<main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><label class="story-theme-control" hidden for="story-theme">Theme <select id="story-theme"><option value="molasses">Molasses flood</option><option value="lantern">Lantern light</option><option value="north-end">Old North End</option><option value="harbor">Winter harbor</option></select></label></div>{story_experiments()}<article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
+{story_experiments()}<div class="reading-hero"><div class="reading-hero__inner"><p class="eyebrow">Short story</p><h1>{title}</h1><p class="author">by {author}</p></div></div>
+<main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><label class="story-theme-control" hidden for="story-theme">Theme <select id="story-theme"><option value="molasses">Molasses flood</option><option value="lantern">Lantern light</option><option value="north-end">Old North End</option><option value="harbor">Winter harbor</option></select></label></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
 {body}
 </article></main>
 <footer class="site-footer"><p>© Michael Penta. All rights reserved.</p><p><a href="{base}">All writing</a></p></footer><script src="{base}assets/poem-live.js"></script></body></html>
@@ -111,13 +111,22 @@ def regenerate_story(path):
 
 def story_experiments(current="standard"):
     base = "/eng111_writing/"
-    items = [("standard", "stories/the-unlikely-death-of-marco-fragale.html", "Standard"),
-             ("fade", "versions/marco-fading-light.html", "Fading light"),
-             ("rise", "versions/marco-rising-darkness.html", "Rising darkness")]
-    links = " ".join('<a href="' + base + path + '"' +
-                     (' aria-current="page"' if key == current else '') + '>' + label + '</a>'
-                     for key, path, label in items)
-    return '<nav class="marco-versions" aria-label="Marco reading versions">' + links + '</nav>'
+    items = [("lantern", "versions/marco-lantern-fades.html", "Lantern fades", "A warm glow slowly goes out."),
+             ("tide", "versions/marco-soft-tide.html", "Soft tide", "A softer edge. A slower rising flood."),
+             ("standard", "stories/the-unlikely-death-of-marco-fragale.html", "Standard", ""),
+             ("fade", "versions/marco-fading-light.html", "Fading light · original", ""),
+             ("rise", "versions/marco-rising-darkness.html", "Rising darkness · original", "")]
+    links = []
+    for key, path, label, detail in items:
+        active = ' aria-current="page"' if key == current else ''
+        style = ' class="marco-choice marco-choice--' + key + '"'
+        if detail:
+            label = '<strong>' + label + ' ↗</strong><span>' + detail + '</span>'
+        links.append('<a href="' + base + path + '"' + active + style + '>' + label + '</a>')
+    return ('<aside class="marco-invitation" aria-label="Other ways to read Marco Fragale">'
+            '<div class="marco-invitation__heading"><p class="eyebrow">Try another way to read</p>'
+            '<p>Let the darkness become part of the story.</p></div>'
+            '<nav class="marco-versions" aria-label="Marco reading versions">' + ''.join(links) + '</nav></aside>')
 
 
 def regenerate_story_experiment(story, effect):
@@ -141,6 +150,29 @@ def regenerate_story_experiment(story, effect):
                         '<button class="marco-toggle" type="button" hidden aria-pressed="true">Effect on</button></body>')
     return page
 
+def regenerate_smooth_story(story, effect):
+    page = regenerate_story(story)
+    title = "Lantern fades" if effect == "lantern" else "Soft tide"
+    note = ("The lantern’s glow slowly fades as you read." if effect == "lantern" else
+            "A soft tide of darkness rises as you read.")
+    page = page.replace('<title>', '<title>' + title + ' · ', 1)
+    page = page.replace('<body class="theme-story">',
+                        '<body class="theme-story marco-smooth" data-effect="' + effect + '">', 1)
+    page = page.replace('<script src="/eng111_writing/assets/story-theme.js"></script>', '')
+    page = page.replace('</head>', '<link rel="stylesheet" href="/eng111_writing/assets/marco-smooth.css?v=1">'
+                        '<script defer src="/eng111_writing/assets/marco-smooth.js?v=1"></script></head>')
+    page = re.sub(r'<label class="story-theme-control".*?</label>', '', page)
+    page = page.replace(story_experiments(), story_experiments(effect))
+    page = page.replace('<p class="eyebrow">Short story</p>',
+                        '<p class="eyebrow">Reading experiment · ' + title + '</p>')
+    page = page.replace('<article class="prose"', '<p class="marco-reading-note">' + note +
+                        ' Scroll back up to bring the light back.</p><noscript><p>The scroll effect needs JavaScript.</p></noscript>'
+                        '<article class="prose"', 1)
+    page = page.replace('</body>', '<div class="marco-scene" aria-hidden="true"><div class="marco-glow"></div>'
+                        '<div class="marco-tide"></div></div>'
+                        '<button class="marco-smooth-toggle" type="button" hidden aria-pressed="true">Effect on</button></body>')
+    return page
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
@@ -161,6 +193,8 @@ def main():
     targets[story] = regenerate_story(story)
     for effect, filename in [("fade", "marco-fading-light.html"), ("rise", "marco-rising-darkness.html")]:
         targets[ROOT / "versions" / filename] = regenerate_story_experiment(story, effect)
+    for effect, filename in [("lantern", "marco-lantern-fades.html"), ("tide", "marco-soft-tide.html")]:
+        targets[ROOT / "versions" / filename] = regenerate_smooth_story(story, effect)
     different = []
     for path, result in targets.items():
         if not path.exists() or result != path.read_text(encoding="utf-8"):

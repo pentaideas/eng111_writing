@@ -1,0 +1,16 @@
+html:has(.marco-smooth){scroll-behavior:auto;background:#17100c}
+body.marco-smooth{--paper:#17100c;--ink:#f4e7d1;--subtle:#d9c5a9;--line:#866c50;--focus:#f2c382;background:var(--paper);color:var(--ink);isolation:isolate;padding-bottom:70px}
+.marco-smooth>.site-header,.marco-smooth>.site-divider,.marco-smooth>.marco-invitation,.marco-smooth>.reading-hero,.marco-smooth>.reading-main,.marco-smooth>.site-footer{position:relative;z-index:1}
+.marco-smooth .reading-hero{background:transparent;color:var(--ink);border-bottom:1px solid #866c50;padding-block:45px 55px}
+.marco-smooth .reading-main{padding-top:30px}
+.marco-smooth .reading-meta{margin-bottom:28px}
+.marco-reading-note{width:min(100%,680px);margin:0 auto 40px;font:14px/1.7 system-ui,sans-serif;color:var(--subtle)}
+.marco-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#17100c}
+.marco-glow{position:absolute;inset:-25%;background:radial-gradient(ellipse at 50% 40%,#715033 0%,#4c3424 24%,#261a13 58%,#17100c 78%);transform-origin:50% 40%;will-change:opacity,transform}
+[data-effect="tide"] .marco-glow{inset:0;background:radial-gradient(ellipse at 50% 0%,#65503a,#463326 65%);transform:none!important;opacity:1!important}
+.marco-tide{display:none;position:absolute;inset:-25% 0 0;background:linear-gradient(to bottom,transparent 0%,#17100c 22%,#100a07 100%);will-change:transform;transform:translate3d(0,100%,0)}
+[data-effect="tide"] .marco-tide{display:block}
+.marco-smooth-toggle{position:fixed;right:18px;bottom:16px;z-index:5;min-height:44px;padding:10px 16px;border:1px solid #c29865;border-radius:5px;background:#251a13;color:#f4e7d1;font:13px/1.5 system-ui,sans-serif;cursor:pointer;box-shadow:0 3px 18px #0004}
+.marco-smooth-toggle[hidden]{display:none}
+.marco-smooth-toggle:focus-visible{outline:3px solid #ffdda9;outline-offset:4px}
+@media print{body.marco-smooth{--paper:white;--ink:black;--subtle:#333;--line:#aaa;background:white;color:black;padding:0}.marco-scene,.marco-smooth-toggle,.marco-invitation,.marco-reading-note{display:none!important}}
