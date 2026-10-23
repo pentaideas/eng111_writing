@@ -76,3 +76,14 @@ a{color:inherit}a:focus-visible{outline:3px solid var(--focus);outline-offset:4p
 @media(max-width:760px){.poem-grid{grid-template-columns:1fr;gap:13px}.poem-card{min-height:285px}.poem-card h3{margin-top:40px}.poem-card .read-link{padding-top:32px}.index-intro{padding-block:52px 39px}}
 @media(max-width:480px){.site-header{padding-top:20px;align-items:flex-start;flex-direction:column;gap:12px}.site-nav{justify-content:flex-start;gap:18px}.reading-hero{padding:48px 20px 60px}.reading-hero h1{font-size:clamp(36px,10vw,50px)}.verse{font-size:19px;line-height:1.65}.reading-main{padding-top:33px}.reading-meta{margin-bottom:35px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.poem-card{transition:none}.poem-card:hover{transform:none}}
+
+/* Short fiction shares the reading pages' typography and navigation. */
+.theme-story{--paper:#faf6ef;--ink:#3c2d24;--subtle:#7a685b;--line:#ddd1c3;--focus:#995630}
+.stories-section{margin-top:44px}
+.poem-card--story{min-height:260px;background:linear-gradient(130deg,#eee1cc,#d8c1a0);color:#493323}
+.poem-card--story h3{margin-top:30px;max-width:760px}
+.poem-card--story .read-link{padding-top:28px}
+.theme-story .reading-hero{background:linear-gradient(135deg,#433128,#76513b);color:#fff6e8;border-bottom:5px solid #bd9162}
+.prose{width:min(100%,680px);margin:auto;font:clamp(18px,2.2vw,21px)/1.8 Georgia,"Times New Roman",serif;overflow-wrap:break-word}
+.prose p{margin:0 0 1.25em}
+.prose p:last-child{margin-bottom:0}

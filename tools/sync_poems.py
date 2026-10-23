@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate published poems from poems/*.md: python3 tools/sync_poems.py [--check]."""
+"""Regenerate published writing from Markdown: python3 tools/sync_poems.py [--check]."""
 import argparse
 import html
 import json
@@ -85,6 +85,26 @@ def regenerate_animation(path):
                          lambda m: m[1] + html.escape(author) + m[2], str(path))
     return source
 
+
+def regenerate_story(path):
+    source = path.with_suffix(".md").read_text(encoding="utf-8-sig").strip()
+    heading = re.match(r"# ([^\n]+)\n+\*[Bb]y ([^\n]+)\*\n+", source)
+    if not heading:
+        raise ValueError("Missing story title or byline in " + str(path))
+    title, author = map(html.escape, heading.groups())
+    paragraphs = re.split(r"\n[ \t]*\n", source[heading.end():].strip())
+    body = "\n".join("<p>" + html.escape(part, quote=False) + "</p>" for part in paragraphs)
+    base = "/eng111_writing/"
+    return f'''<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><link rel="stylesheet" href="{base}assets/poems.css"></head>
+<body class="theme-story"><header class="site-header"><a class="site-brand" href="{base}"><span class="site-brand__name">Michael Penta</span><span class="site-brand__sub">ENG 111 · Writing</span></a><nav class="site-nav" aria-label="Writing pages"><a href="{base}">Writing</a><a href="{base}poems/among-sequoia-sempervirens.html">Sequoia</a><a href="{base}poems/boston-proper.html">Boston</a><a href="{base}poems/olympic.html">Olympic</a><a href="{base}stories/{path.name}" aria-current="page">Marco Fragale</a></nav></header><hr class="site-divider">
+<div class="reading-hero"><div class="reading-hero__inner"><p class="eyebrow">Short story</p><h1>{title}</h1><p class="author">by {author}</p></div></div>
+<main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><span class="detail">Short fiction</span></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
+{body}
+</article></main>
+<footer class="site-footer"><p>© Michael Penta. All rights reserved.</p><p><a href="{base}">All writing</a></p></footer><script src="{base}assets/poem-live.js"></script></body></html>
+'''
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
@@ -101,9 +121,11 @@ def main():
     for name in ANIMATIONS:
         path = ROOT / "versions" / name
         targets[path] = regenerate_animation(path)
+    story = ROOT / "stories" / "the-unlikely-death-of-marco-fragale.html"
+    targets[story] = regenerate_story(story)
     different = []
     for path, result in targets.items():
-        if result != path.read_text(encoding="utf-8"):
+        if not path.exists() or result != path.read_text(encoding="utf-8"):
             different.append(str(path.relative_to(ROOT)))
             if not args.check:
                 path.write_text(result, encoding="utf-8")
@@ -111,7 +133,7 @@ def main():
         for name in different:
             print(("Out of sync: " if args.check else "Updated: ") + name)
     else:
-        print("All published poem copies match their source files.")
+        print("All published writing matches its source files.")
     return 1 if args.check and different else 0
 
 if __name__ == "__main__":

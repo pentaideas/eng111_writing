@@ -1,49 +1,24 @@
 # ENG 111 Writing — Michael Penta
 
-An archive of original drafts for eng 111. 
+An archive of original poems and short fiction for ENG 111.
+
+**[Read the writing on the website](https://pentaideas.github.io/eng111_writing/)**
 
 ## Poems
 
-**[Read the poems on the website](https://pentaideas.github.io/eng111_writing/)** — each poem has its own page. Both Olympic drafts are on the same page.
-
-- [Among Sequoia Sempervirens](poems/among-sequoia-sempervirens.md) — original order
-- [Among Sequoia Sempervirens (inverted page)](poems/among-sequoia-sempervirens-inverted.md) — visual experiment
-- [Boston Proper](poems/boston-proper.md)
-- [Olympic (version 1)](poems/olympic-v1.md) — mountain lake opening
-- [Olympic (version 2)](poems/olympic-v2.md) — clear-cut opening
-
+- [Among Sequoia Sempervirens](https://pentaideas.github.io/eng111_writing/poems/among-sequoia-sempervirens.html)
+- [Boston Proper](https://pentaideas.github.io/eng111_writing/poems/boston-proper.html)
+- [Olympic — two drafts](https://pentaideas.github.io/eng111_writing/poems/olympic.html)
 
 ## Stories
 
-- [The Unlikely Death of Marco Fragale](stories/the-unlikely-death-of-marco-fragale.md) — [original Word document](stories/the-unlikely-death-of-marco-fragale.docx)
+- [The Unlikely Death of Marco Fragale](https://pentaideas.github.io/eng111_writing/stories/the-unlikely-death-of-marco-fragale.html) — [original Word document](stories/the-unlikely-death-of-marco-fragale.docx)
 
+## Reading upward
 
-## Among Sequoia Sempervirens - Interactive upward reading
+I wanted *Among Sequoia Sempervirens* to be read from the bottom up, reflecting the action of looking up a tree. I’ve kept four versions as I work toward that experience, each with a choice of three color schemes.
 
-**[Open a random animation](https://pentaideas.github.io/eng111_writing/versions/random.html)** 
-
-I really wanted the presentation of *Among Sequoia Sempervirens* to be 
-read from the bottom up so it could reflect the action of looking up a tree.
-
-This animation is an attempt at designing that experience. 
-
-The first issue, here was that the page moved, not your head.
-
-I have tried a few iterations, but I didn't want to throw away the earlier attempts, so I kept four versions. I'm still trying to figure out which one gets closest to what I had in mind.
-
-- [Version 1](https://pentaideas.github.io/eng111_writing/versions/sequoia-upward-crawl-v1.html) — the words move up the page as you scroll.
-- [Version 2](https://pentaideas.github.io/eng111_writing/versions/sequoia-upward-crawl-dusk.html) — each line appears above the last and stays there.
-- [Version 3](https://pentaideas.github.io/eng111_writing/versions/sequoia-upward-crawl-bark.html) — the lines build upward but move a little as the poem grows. 
-- [Version 4](https://pentaideas.github.io/eng111_writing/versions/sequoia-upward-crawl-signature.html) — another take on the first scrolling version, which started as an experiment with where the title and my name should go. which i later incorporated on all 
-
-There are also three color schemes: Parchment, Forest at Dusk, and Redwood Bark. You can change the colors in any version.
-
-The animation link picks a random version and color each time you open it or you can pick a version. The main website now has a place to choose which poem to read.
-
-
-## Keeping the poetry website synchronized
-
-The Markdown files in poems/ are the authoritative poem texts. When I change one, GitHub Actions regenerates its reading page and the Sequoia animation fallbacks. The reading pages and animations also read the current Markdown on each visit, so they remain current even before that regeneration finishes. To regenerate locally, run python3 tools/sync_poems.py; to check for differences, run python3 tools/sync_poems.py --check.
+**[Try an interactive upward reading](https://pentaideas.github.io/eng111_writing/versions/random.html)**
 
 ## Rights
 

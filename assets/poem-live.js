@@ -59,6 +59,28 @@
   }
   function hydrate() {
     document.querySelectorAll('[data-poem-source]').forEach(updateReading);
+    document.querySelectorAll('[data-story-source]').forEach(async element => {
+      try {
+        const path = element.dataset.storySource;
+        if (!/^\/eng111_writing\/stories\/[\w-]+\.md$/.test(path))
+          throw new Error('Unexpected story source path');
+        const response = await fetch(path, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Story unavailable: ' + response.status);
+        const text = (await response.text()).replace(/\r\n?/g, '\n').replace(/^\uFEFF/, '').trim();
+        const heading = text.match(/^# ([^\n]+)\n+\*[Bb]y ([^\n]+)\*\n+/);
+        if (!heading) throw new Error('Missing story title or byline');
+        const body = text.slice(heading[0].length).trim();
+        if (!body) throw new Error('Empty story');
+        const paragraphs = body.split(/\n[ \t]*\n/).map(part => {
+          const paragraph = document.createElement('p');
+          paragraph.textContent = part;
+          return paragraph;
+        });
+        element.replaceChildren(...paragraphs);
+      } catch (error) {
+        console.warn('Using published story fallback:', error);
+      }
+    });
   }
   window.PoemLive = { parse, load, lines, hydrate };
   if (document.readyState === 'loading')
