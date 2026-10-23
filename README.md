@@ -12,7 +12,7 @@ An archive of drafts of original poems and short fiction for ENG 111.
 
 ## Stories
 
-- [The Unlikely Death of Marco Fragale](https://pentaideas.github.io/eng111_writing/stories/the-unlikely-death-of-marco-fragale.html) — [original Word document](stories/the-unlikely-death-of-marco-fragale.docx)
+- [The Unlikely Death of Marco Fragale](https://pentaideas.github.io/eng111_writing/stories/the-unlikely-death-of-marco-fragale.html) 
 
 ## Experiments in Presentation 
 ### Reading Direction and Looking Up
