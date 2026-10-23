@@ -102,7 +102,7 @@ def regenerate_story(path):
 <main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><label class="story-theme-control" hidden for="story-theme">Theme <select id="story-theme"><option value="molasses">Molasses flood</option><option value="lantern">Lantern light</option><option value="north-end">Old North End</option><option value="harbor">Winter harbor</option></select></label></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
 {body}
 </article></main>
-<footer class="site-footer"><p>© Michael Penta. All rights reserved.</p><p><a href="{base}">All writing</a></p></footer><script src="{base}assets/poem-live.js"></script></body></html>
+<footer class="site-footer"><p>© Michael Penta. All rights reserved.</p><p><a href="{base}">All writing</a> · <a href="https://github.com/pentaideas/eng111_writing">GitHub</a></p></footer><script src="{base}assets/poem-live.js"></script></body></html>
 '''
 
 
@@ -121,7 +121,7 @@ def story_experiments(current="standard"):
         active = ' aria-current="page"' if key == current else ''
         style = ' class="marco-choice marco-choice--' + key + '"'
         if detail:
-            label = '<strong>' + label + ' ↗</strong><span>' + detail + '</span>'
+            label = '<strong>' + label + '</strong><span>' + detail + '</span>'
         links.append('<a href="' + base + path + '"' + active + style + '>' + label + '</a>')
     return ('<aside class="marco-invitation" aria-label="Other ways to read Marco Fragale">'
             '<div class="marco-invitation__heading"><p class="eyebrow">Try another way to read</p>'
