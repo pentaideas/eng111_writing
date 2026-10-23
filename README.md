@@ -8,7 +8,7 @@ An archive of drafts of original poems and short fiction for ENG 111.
 
 - [Among Sequoia Sempervirens](https://pentaideas.github.io/eng111_writing/poems/among-sequoia-sempervirens.html)
 - [Boston Proper](https://pentaideas.github.io/eng111_writing/poems/boston-proper.html)
-- [Olympic — two drafts](https://pentaideas.github.io/eng111_writing/poems/olympic.html)
+- [Olympic](https://pentaideas.github.io/eng111_writing/poems/olympic.html) — [alternate draft](https://pentaideas.github.io/eng111_writing/poems/olympic-v1.html)
 
 ## Stories
 

@@ -54,17 +54,10 @@ def replace_one(text, pattern, fn, label):
 
 def regenerate_page(path, names):
     source = path.read_text(encoding="utf-8")
-    if path.name != "olympic.html":
-        content = render(parse(names[0])[2])
-        return replace_one(source, r'(<article class="verse[^"]*"[^>]*>).*?(</article>)',
-                           lambda m: m[1] + "\n" + content + "\n" + m[2], str(path))
-    for number, name in enumerate(names, 1):
-        content = render(parse(name)[2])
-        pattern = (r'(<section class="draft-section" id="version-' + str(number) +
-                   r'"[\s\S]*?<div class="verse"[^>]*>).*?(</div>)')
-        source = replace_one(source, pattern,
-                             lambda m: m[1] + "\n" + content + "\n" + m[2], str(path))
-    return source
+    content = render(parse(names[0])[2])
+    return replace_one(source, r'(<article class="verse[^"]*"[^>]*>).*?(</article>)',
+                       lambda m: m[1] + "\n" + content + "\n" + m[2], str(path))
+
 
 def regenerate_animation(path):
     title, author, stanzas = parse("among-sequoia-sempervirens.md")
@@ -184,7 +177,9 @@ def main():
         POEMS / "boston-proper.html":
             regenerate_page(POEMS / "boston-proper.html", ["boston-proper.md"]),
         POEMS / "olympic.html":
-            regenerate_page(POEMS / "olympic.html", ["olympic-v1.md", "olympic-v2.md"]),
+            regenerate_page(POEMS / "olympic.html", ["olympic-v2.md"]),
+        POEMS / "olympic-v1.html":
+            regenerate_page(POEMS / "olympic-v1.html", ["olympic-v1.md"]),
     }
     for name in ANIMATIONS:
         path = ROOT / "versions" / name
