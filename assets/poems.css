@@ -94,3 +94,7 @@ a{color:inherit}a:focus-visible{outline:3px solid var(--focus);outline-offset:4p
 .prose{width:min(100%,680px);margin:auto;font:clamp(18px,2.2vw,21px)/1.8 Georgia,"Times New Roman",serif;overflow-wrap:break-word}
 .prose p{margin:0 0 1.25em}
 .prose p:last-child{margin-bottom:0}
+
+.marco-versions{display:flex;flex-wrap:wrap;gap:10px;margin:0 auto 26px;width:min(100%,680px);font:13px/1.5 system-ui,sans-serif}
+.marco-versions a{padding:10px 14px;border:1px solid var(--line);border-radius:3px;text-decoration:none}
+.marco-versions a:hover,.marco-versions a[aria-current="page"]{text-decoration:underline;text-underline-offset:4px}
