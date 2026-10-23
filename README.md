@@ -20,6 +20,15 @@ I wanted *Among Sequoia Sempervirens* to be read from the bottom up, reflecting 
 
 **[Try an interactive upward reading](https://pentaideas.github.io/eng111_writing/versions/random.html)**
 
+## Marco reading experiments
+
+Two ways to experience the story’s growing darkness:
+
+- [Fading light](https://pentaideas.github.io/eng111_writing/versions/marco-fading-light.html) — the page gradually darkens as you scroll.
+- [Rising darkness](https://pentaideas.github.io/eng111_writing/versions/marco-rising-darkness.html) — darkness fills upward from the bottom.
+
+Scroll back up to reverse either effect, or use the on/off button.
+
 ## Rights
 
 All works © Michael Penta. All rights reserved.
