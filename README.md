@@ -1,6 +1,6 @@
 # ENG 111 Writing — Michael Penta
 
-An archive of original poems and short fiction for ENG 111.
+An archive of drafts of original poems and short fiction for ENG 111.
 
 **[Read the writing on the website](https://pentaideas.github.io/eng111_writing/)**
 
@@ -14,13 +14,14 @@ An archive of original poems and short fiction for ENG 111.
 
 - [The Unlikely Death of Marco Fragale](https://pentaideas.github.io/eng111_writing/stories/the-unlikely-death-of-marco-fragale.html) — [original Word document](stories/the-unlikely-death-of-marco-fragale.docx)
 
-## Reading upward
+##Presentation Experiements
+### Reading upward
 
 I wanted *Among Sequoia Sempervirens* to be read from the bottom up, reflecting the action of looking up a tree. I’ve kept four versions as I work toward that experience, each with a choice of three color schemes.
 
 **[Try an interactive upward reading](https://pentaideas.github.io/eng111_writing/versions/random.html)**
 
-## Marco reading experiments
+### Marco reading experiments
 
 Two ways to experience the story’s growing darkness:
 
