@@ -19,7 +19,7 @@ An archive of drafts of original poems and short fiction for ENG 111.
 
 I wanted *Among Sequoia Sempervirens* to be read from the bottom up, reflecting the action of looking up a tree. I’ve kept four versions as I work toward that experience, each with a choice of three color schemes.
 
-**[Try an interactive upward reading](https://pentaideas.github.io/eng111_writing/versions/random.html)**
+**[Try Them all](https://pentaideas.github.io/eng111_writing/versions/random.html)**
 
 ### Darkness Consumes
 
@@ -28,7 +28,7 @@ Two ways to experience the story’s growing darkness:
 - [Fading light](https://pentaideas.github.io/eng111_writing/versions/marco-fading-light.html) — the page gradually darkens as you scroll.
 - [Rising darkness](https://pentaideas.github.io/eng111_writing/versions/marco-rising-darkness.html) — darkness fills upward from the bottom.
 
-Scroll back up to reverse either effect, or use the on/off button.
+Scroll back up to reverse the effect, or use the on/off button.
 
 ## Rights
 
