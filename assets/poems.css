@@ -78,12 +78,19 @@ a{color:inherit}a:focus-visible{outline:3px solid var(--focus);outline-offset:4p
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.poem-card{transition:none}.poem-card:hover{transform:none}}
 
 /* Short fiction shares the reading pages' typography and navigation. */
-.theme-story{--paper:#faf6ef;--ink:#3c2d24;--subtle:#7a685b;--line:#ddd1c3;--focus:#995630}
+.theme-story{--paper:#f2e5d0;--ink:#3b251d;--subtle:#705343;--line:#cfbda6;--focus:#884522;--story-header:#211613;--story-header-ink:#f2e5d0;--story-accent:#a95f32}
+[data-story-theme="lantern"] .theme-story{--paper:#faf3e5;--ink:#3c2d24;--subtle:#75604c;--line:#dfceb3;--focus:#865a1c;--story-header:#33251d;--story-header-ink:#faf3e5;--story-accent:#d99b43}
+[data-story-theme="north-end"] .theme-story{--paper:#f3ebdd;--ink:#302e2a;--subtle:#706050;--line:#d3c5b0;--focus:#713c32;--story-header:#713c32;--story-header-ink:#f3ebdd;--story-accent:#a08b69}
+[data-story-theme="harbor"] .theme-story{--paper:#eef1f0;--ink:#25343d;--subtle:#586975;--line:#c6d0d4;--focus:#775c29;--story-header:#172c3c;--story-header-ink:#eef1f0;--story-accent:#c6a15c}
 .stories-section{margin-top:44px}
 .poem-card--story{min-height:260px;background:linear-gradient(130deg,#eee1cc,#d8c1a0);color:#493323}
 .poem-card--story h3{margin-top:30px;max-width:760px}
 .poem-card--story .read-link{padding-top:28px}
-.theme-story .reading-hero{background:linear-gradient(135deg,#433128,#76513b);color:#fff6e8;border-bottom:5px solid #bd9162}
+.theme-story .reading-hero{background:var(--story-header);color:var(--story-header-ink);border-bottom:5px solid var(--story-accent)}
+.story-theme-control{display:flex;align-items:center;flex-wrap:wrap;gap:8px;max-width:100%;font:12px/1.5 system-ui,sans-serif;color:var(--subtle)}
+.story-theme-control[hidden]{display:none}
+.story-theme-control select{max-width:100%;min-height:44px;border:1px solid var(--line);border-radius:3px;background:var(--paper);color:var(--ink);padding:8px 12px;font:16px/1.5 system-ui,sans-serif}
+.story-theme-control select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .prose{width:min(100%,680px);margin:auto;font:clamp(18px,2.2vw,21px)/1.8 Georgia,"Times New Roman",serif;overflow-wrap:break-word}
 .prose p{margin:0 0 1.25em}
 .prose p:last-child{margin-bottom:0}

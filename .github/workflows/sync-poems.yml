@@ -8,6 +8,7 @@ on:
       - 'stories/*.md'
       - 'tools/sync_poems.py'
       - 'assets/poem-live.js'
+      - 'assets/story-theme.js'
       - '.github/workflows/sync-poems.yml'
   workflow_dispatch:
 
@@ -31,6 +32,7 @@ jobs:
           python3 tools/sync_poems.py --check
           git diff --check
           node --check assets/poem-live.js
+          node --check assets/story-theme.js
       - name: Commit generated pages
         run: |
           git config user.name "github-actions[bot]"

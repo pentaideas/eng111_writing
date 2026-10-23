@@ -96,10 +96,10 @@ def regenerate_story(path):
     body = "\n".join("<p>" + html.escape(part, quote=False) + "</p>" for part in paragraphs)
     base = "/eng111_writing/"
     return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><link rel="stylesheet" href="{base}assets/poems.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><script src="{base}assets/story-theme.js"></script><link rel="stylesheet" href="{base}assets/poems.css"></head>
 <body class="theme-story"><header class="site-header"><a class="site-brand" href="{base}"><span class="site-brand__name">Michael Penta</span><span class="site-brand__sub">ENG 111 · Writing</span></a><nav class="site-nav" aria-label="Writing pages"><a href="{base}">Writing</a><a href="{base}poems/among-sequoia-sempervirens.html">Sequoia</a><a href="{base}poems/boston-proper.html">Boston</a><a href="{base}poems/olympic.html">Olympic</a><a href="{base}stories/{path.name}" aria-current="page">Marco Fragale</a></nav></header><hr class="site-divider">
 <div class="reading-hero"><div class="reading-hero__inner"><p class="eyebrow">Short story</p><h1>{title}</h1><p class="author">by {author}</p></div></div>
-<main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><span class="detail">Short fiction</span></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
+<main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><label class="story-theme-control" hidden for="story-theme">Theme <select id="story-theme"><option value="molasses">Molasses flood</option><option value="lantern">Lantern light</option><option value="north-end">Old North End</option><option value="harbor">Winter harbor</option></select></label></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
 {body}
 </article></main>
 <footer class="site-footer"><p>© Michael Penta. All rights reserved.</p><p><a href="{base}">All writing</a></p></footer><script src="{base}assets/poem-live.js"></script></body></html>
