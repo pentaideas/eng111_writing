@@ -38,7 +38,7 @@ The main pages use a compact reading layout with flat color fields. Boston retai
 
 These pages and the homepage load `assets/reading-edition.css`. Sequoia uses the existing Redwood Bark upward-reading experiment; all four original experiments remain available unchanged.
 
-Markdown remains the source for published writing. The standard Sequoia page and all four interactive upward readings use `poems/among-sequoia-sempervirens.md`. The separate [static inverted reading](https://pentaideas.github.io/eng111_writing/poems/among-sequoia-sempervirens-inverted.html) uses `poems/among-sequoia-sempervirens-inverted.md`, preserving its visual line order and author / by / title footer. The two drafts can differ. Run `python3 tools/sync_poems.py` after text changes, then `python3 tools/sync_poems.py --check` to verify the generated pages. Marco’s layout and version menu are maintained in that script.
+Markdown remains the source for published writing. The standard Sequoia page and all four interactive upward readings use `poems/among-sequoia-sempervirens.md`. The separate [static inverted reading](https://pentaideas.github.io/eng111_writing/poems/among-sequoia-sempervirens-inverted.html) uses `poems/among-sequoia-sempervirens-inverted.md`, preserving its visual line order and author / by / title footer. The two drafts can differ. Standard and static inverted pages share a compact reading switcher; the homepage and interactive menus link directly to the static inverted reading. Run `python3 tools/sync_poems.py` after text changes, then `python3 tools/sync_poems.py --check` to verify the generated pages. Marco’s layout and version menu are maintained in that script.
 
 ## Rights
 

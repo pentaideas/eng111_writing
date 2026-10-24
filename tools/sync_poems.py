@@ -63,9 +63,23 @@ def replace_one(text, pattern, fn, label):
         raise ValueError(label + ": expected one match, got " + str(count))
     return result
 
+def sequoia_readings(current="standard"):
+    base = "/eng111_writing/"
+    items = [("standard", "poems/among-sequoia-sempervirens.html", "Standard"),
+             ("inverted", "poems/among-sequoia-sempervirens-inverted.html", "Static inverted"),
+             ("interactive", "versions/sequoia-upward-crawl-bark.html", "Interactive upward")]
+    links = [('<span aria-current="page">' + label + '</span>') if key == current else
+             ('<a href="' + base + path + '">' + label + '</a>') for key, path, label in items]
+    return ('<nav class="reading-meta sequoia-readings" aria-label="Sequoia readings">' +
+            '<span aria-hidden="true">·</span>'.join(links) + '</nav>')
+
+
 def regenerate_page(path, names):
     source = path.read_text(encoding="utf-8")
     content = render(parse(names[0])[2])
+    if names[0] == "among-sequoia-sempervirens.md":
+        source = re.sub(r'<(?:div|nav) class="reading-meta[^"]*"[^>]*>.*?</(?:div|nav)>',
+                        sequoia_readings(), source, count=1, flags=re.S)
     return replace_one(source, r'(<article class="verse[^"]*"[^>]*>).*?(</article>)',
                        lambda m: m[1] + "\n" + content + "\n" + m[2], str(path))
 
@@ -78,9 +92,8 @@ def regenerate_inverted_page():
     page = re.sub(r'<meta name="description"[^>]*>',
                   '<meta name="description" content="A static, bottom-to-top reading of Among Sequoia Sempervirens.">', page)
     page = re.sub(r'<div class="reading-hero">.*?</div></div>', '', page, flags=re.S)
-    page = re.sub(r'<div class="reading-meta">.*?</div>',
-                  '<div class="reading-meta"><a href="/eng111_writing/poems/among-sequoia-sempervirens.html">Standard reading</a>'
-                  '<a href="/eng111_writing/versions/sequoia-upward-crawl-bark.html">Interactive upward reading</a></div>', page, flags=re.S)
+    page = re.sub(r'<(?:div|nav) class="reading-meta[^"]*"[^>]*>.*?</(?:div|nav)>',
+                  sequoia_readings("inverted"), page, count=1, flags=re.S)
     page = page.replace('data-poem-source="/eng111_writing/poems/among-sequoia-sempervirens.md"',
                         'data-poem-source="/eng111_writing/poems/among-sequoia-sempervirens-inverted.md" data-poem-order="inverted"')
     page = replace_one(page, r'(<article class="verse[^"]*"[^>]*>).*?(</article>)',

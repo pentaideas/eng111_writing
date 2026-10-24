@@ -87,3 +87,9 @@
   .edition .reading-versions,.edition .site-header,.edition .reading-meta{display:none}
   .edition .reading-hero{background:white!important;color:black!important;padding:20px 0}
 }
+
+/* The two static Sequoia readings share one compact switcher. */
+.edition.theme-sequoia .sequoia-readings{justify-content:center;gap:4px 14px;font:600 14px/1.6 system-ui,sans-serif}
+.edition.theme-sequoia .sequoia-readings span{display:inline-flex;align-items:center;min-height:44px}
+.edition.theme-sequoia .sequoia-readings [aria-current="page"]{font-weight:700}
+@media(max-width:480px){.edition.theme-sequoia .sequoia-readings{gap:4px 10px;font-size:13px}.edition.theme-sequoia .sequoia-readings a{font-size:13px}.edition.theme-sequoia .sequoia-readings [aria-hidden]{display:none}}
