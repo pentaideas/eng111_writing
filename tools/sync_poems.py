@@ -110,12 +110,12 @@ def story_experiments(current="standard"):
              ("tide", "versions/marco-soft-tide.html", "Soft tide")]
     links = []
     for key, path, label in items:
-        active = ' aria-current="page"' if key == current else ''
-        links.append('<a href="' + base + path + '"' + active + '>' + label + '</a>')
+        if key != current:
+            links.append('<a href="' + base + path + '">' + label + '</a>')
+    invitation = ('<p>Read it another way. <a href="' + base + 'versions/marco-lantern-fades.html">'
+                  'Try Lantern fades</a> — a warm glow slowly goes out.</p>') if current == "standard" else ''
     return ('<aside class="reading-versions" id="reading-versions" aria-label="Other ways to read Marco Fragale">'
-            '<p>Read it another way. <a href="' + base + 'versions/marco-lantern-fades.html">'
-            'Try Lantern fades</a> — a warm glow slowly goes out.</p>'
-            '<details><summary>All reading versions</summary>'
+            + invitation + '<details><summary>Other readings</summary>'
             '<nav aria-label="Marco reading versions">' + ''.join(links) + '</nav></details></aside>')
 
 
