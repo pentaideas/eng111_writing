@@ -32,6 +32,15 @@ Four ways to experience the story’s growing darkness:
 
 Scroll back up to reverse the effect, or use the on/off button.
 
+## Reading pages
+
+Boston, Olympic, and Marco use a compact reading layout with flat color fields. Marco recommends Lantern fades; the expandable reading menu retains all four experiments and the standard page. Olympic opens Version 2, with Version 1 available as an alternate draft.
+
+These pages and the homepage load `assets/reading-edition.css`. Sequoia keeps its existing pages, experiments, and styling.
+
+Markdown remains the source for published writing. Run `python3 tools/sync_poems.py` after text changes, then `python3 tools/sync_poems.py --check` to verify the generated pages. Marco’s layout and version menu are maintained in that script.
+
 ## Rights
 
 All works © Michael Penta. All rights reserved.
+
