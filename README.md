@@ -36,7 +36,7 @@ Scroll back up to reverse the effect, or use the on/off button.
 
 ## Reading pages
 
-The main pages use a compact reading layout with flat color fields. Boston retains its intentional Red Sox navy and red. Marco recommends Lantern fades; the expandable reading menu retains all four experiments and the standard page. Olympic opens Version 2, with Version 1 available as an alternate draft.
+The main pages use a compact reading layout with flat color fields. Boston retains its intentional Red Sox navy and red on its reading page; its homepage cover uses a pale ground and the same plain reading link as the other poems. Marco recommends Lantern fades; the expandable reading menu retains all four experiments and the standard page. Olympic opens Version 2, with Version 1 available as an alternate draft.
 
 These pages and the homepage load `assets/reading-edition.css`. Sequoia uses the existing Redwood Bark upward-reading experiment; all four original experiments remain available unchanged.
 

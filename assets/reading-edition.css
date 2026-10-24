@@ -45,9 +45,9 @@
 .edition.theme-home .experiment-invitation p{font-size:15px}
 .edition.theme-home .poem-card{border:0;border-radius:0;box-shadow:none;transition:transform 180ms ease}
 .edition.theme-home .poem-card--sequoia{background:#e3e9d8;color:#294433}
-.edition.theme-home .poem-card--boston{background:#0c2340}
-.edition.theme-home .poem-card--boston:after{display:block;height:12px;background:#bd3039}
-.edition.theme-home .poem-card--boston .read-link{align-self:flex-start;background:#bd3039;color:#fff;padding:10px 14px}
+.edition.theme-home .poem-card--boston{background:#e4e7ec;color:#0c2340}
+.edition.theme-home .poem-card--boston:after{display:none}
+.edition.theme-home .poem-card--boston .read-link{color:#bd3039}
 .edition.theme-home .poem-card--olympic{background:#ccdfcd}
 .edition.theme-home .poem-card--sequoia h3,.edition.theme-home .poem-card--boston h3,.edition.theme-home .poem-card--olympic h3{margin-top:0;font-size:clamp(30px,3.25vw,43px);min-height:2.16em}
 .edition.theme-home .poem-card--sequoia a,.edition.theme-home .poem-card--boston a,.edition.theme-home .poem-card--olympic a{justify-content:center}
