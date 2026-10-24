@@ -107,9 +107,7 @@ def story_experiments(current="standard"):
     base = "/eng111_writing/"
     items = [("standard", "stories/the-unlikely-death-of-marco-fragale.html", "Standard"),
              ("lantern", "versions/marco-lantern-fades.html", "Lantern fades"),
-             ("tide", "versions/marco-soft-tide.html", "Soft tide"),
-             ("fade", "versions/marco-fading-light.html", "Fading light · original"),
-             ("rise", "versions/marco-rising-darkness.html", "Rising darkness · original")]
+             ("tide", "versions/marco-soft-tide.html", "Soft tide")]
     links = []
     for key, path, label in items:
         active = ' aria-current="page"' if key == current else ''
@@ -120,25 +118,6 @@ def story_experiments(current="standard"):
             '<details><summary>All reading versions</summary>'
             '<nav aria-label="Marco reading versions">' + ''.join(links) + '</nav></details></aside>')
 
-
-def regenerate_story_experiment(story, effect):
-    page = regenerate_story(story)
-    title = "Fading light" if effect == "fade" else "Rising darkness"
-    note = ("The light fades as you scroll through the story." if effect == "fade" else
-            "Darkness rises from the bottom as you scroll through the story.")
-    page = page.replace('<title>', '<title>' + title + ' · ', 1)
-    page = page.replace('<body class="theme-story edition">',
-                        '<body class="theme-story edition marco-experiment" data-effect="' + effect + '">', 1)
-    page = page.replace('<script src="/eng111_writing/assets/story-theme.js"></script>', '')
-    page = page.replace('</head>', '<link rel="stylesheet" href="/eng111_writing/assets/marco-experiments.css?v=1">'
-                        '<script defer src="/eng111_writing/assets/marco-experiments.js?v=1"></script></head>')
-    page = re.sub(r'<label class="story-theme-control".*?</label>', '', page)
-    page = page.replace(story_experiments(), story_experiments(effect))
-    page = page.replace(' · Short story</p>', ' · ' + title + '</p>')
-    page = page.replace('<article class="prose"', '<p class="marco-reading-note">' + note + ' Scroll back up to reverse it.</p><article class="prose"', 1)
-    page = page.replace('</body>', '<div class="marco-flood" aria-hidden="true"></div>'
-                        '<button class="marco-toggle" type="button" hidden aria-pressed="true">Effect on</button></body>')
-    return page
 
 def regenerate_smooth_story(story, effect):
     page = regenerate_story(story)
@@ -182,8 +161,6 @@ def main():
         targets[path] = regenerate_animation(path)
     story = ROOT / "stories" / "the-unlikely-death-of-marco-fragale.html"
     targets[story] = regenerate_story(story)
-    for effect, filename in [("fade", "marco-fading-light.html"), ("rise", "marco-rising-darkness.html")]:
-        targets[ROOT / "versions" / filename] = regenerate_story_experiment(story, effect)
     for effect, filename in [("lantern", "marco-lantern-fades.html"), ("tide", "marco-soft-tide.html")]:
         targets[ROOT / "versions" / filename] = regenerate_smooth_story(story, effect)
     different = []

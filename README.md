@@ -25,18 +25,16 @@ I wanted *Among Sequoia Sempervirens* to be read from the bottom up, reflecting 
 
 ### Darkness Consumes
 
-Four ways to experience the story’s growing darkness:
+Two ways to experience the story’s growing darkness:
 
 - [Lantern fades](https://pentaideas.github.io/eng111_writing/versions/marco-lantern-fades.html) — a warm glow slowly goes out.
 - [Soft tide](https://pentaideas.github.io/eng111_writing/versions/marco-soft-tide.html) — darkness rises with a softer edge.
-- [Fading light](https://pentaideas.github.io/eng111_writing/versions/marco-fading-light.html) — the page gradually darkens as you scroll.
-- [Rising darkness](https://pentaideas.github.io/eng111_writing/versions/marco-rising-darkness.html) — darkness fills upward from the bottom.
 
 Scroll back up to reverse the effect, or use the on/off button.
 
 ## Reading pages
 
-The main pages use a compact reading layout with flat color fields. Boston retains its intentional Red Sox navy and red on its reading page; its homepage cover uses a pale ground and the same plain reading link as the other poems. Marco recommends Lantern fades; the expandable reading menu retains all four experiments and the standard page. Olympic opens Version 2, with Version 1 available as an alternate draft.
+The main pages use a compact reading layout with flat color fields. Boston retains its intentional Red Sox navy and red on its reading page; its homepage cover uses a pale ground and the same plain reading link as the other poems. Marco recommends Lantern fades; the expandable reading menu offers Lantern fades, Soft tide, and the standard page. Olympic opens Version 2, with Version 1 available as an alternate draft.
 
 These pages and the homepage load `assets/reading-edition.css`. Sequoia uses the existing Redwood Bark upward-reading experiment; all four original experiments remain available unchanged.
 
