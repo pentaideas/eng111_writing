@@ -1,12 +1,27 @@
 /* Browser-side poem sync; Markdown is always authoritative. */
 (() => {
   'use strict';
-  function parse(markdown) {
+  function parse(markdown, inverted = false) {
     let text = markdown.replace(/\r\n?/g, '\n').replace(/^\uFEFF/, '').trim();
     text = text.replace(/^present center aligned[ \t]*\n+/i, '');
     const title = text.match(/^# ([^\n]+)\n+/);
     if (!title) throw new Error('Missing poem title');
     text = text.slice(title[0].length);
+    if (inverted) {
+      text = text.trim();
+      const footer = text.match(/\n+([^\n]+)\nby[ \t]*\n([^\n]+)$/);
+      if (!footer) throw new Error('Missing inverted poem footer');
+      const body = text.slice(0, footer.index)
+        .replace(/^\*\*Reading instruction:\*\*[^\n]*\n*/, '').trim()
+        .replace(/^present center aligned[ \t]*\n*/i, '').trim();
+      if (!body) throw new Error('Empty inverted poem');
+      const stanzas = body.split(/\n[ \t]*\n/).reverse().map(part => ({
+        italic: false,
+        lines: part.trim().split('\n').map(line => line.replace(/[ \t]+$/g, '')).reverse()
+      }));
+      return { title: footer[2].trim(), author: footer[1].trim(), stanzas,
+        lines: stanzas.flatMap(stanza => stanza.lines) };
+    }
     const author = text.match(/^\*by ([^\n]+)\*\n+/i);
     if (!author) throw new Error('Missing poet byline');
     text = text.slice(author[0].length).trim();
@@ -24,7 +39,7 @@
       throw new Error('Unexpected poem source path');
     const response = await fetch(path, { cache: 'no-store' });
     if (!response.ok) throw new Error('Poem unavailable: ' + response.status);
-    return parse(await response.text());
+    return parse(await response.text(), path.endsWith('-inverted.md'));
   }
   async function lines(path, fallback) {
     try {

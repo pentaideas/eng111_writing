@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POEMS = ROOT / "poems"
 ANIMATIONS = ["sequoia-upward-crawl-v1.html", "sequoia-upward-crawl-dusk.html",
               "sequoia-upward-crawl-bark.html", "sequoia-upward-crawl-signature.html"]
-SOURCE = "/eng111_writing/poems/among-sequoia-sempervirens.md"
+SOURCE = "/eng111_writing/poems/among-sequoia-sempervirens-inverted.md"
 
 def parse(name):
     text = (POEMS / name).read_text(encoding="utf-8-sig").replace("\r\n", "\n").strip()
@@ -20,6 +20,17 @@ def parse(name):
         raise ValueError("Missing poem heading in " + name)
     title = heading.group(1)
     text = text[heading.end():]
+    if name == "among-sequoia-sempervirens-inverted.md":
+        footer = re.search(r'\n+([^\n]+)\nby[ \t]*\n([^\n]+)$', text.strip())
+        if not footer:
+            raise ValueError("Missing inverted poem footer in " + name)
+        author, title = (part.strip() for part in footer.groups())
+        body = text.strip()[:footer.start()]
+        body = re.sub(r'^\*\*Reading instruction:\*\*[^\n]*\n*', '', body).strip()
+        body = re.sub(r'^present center aligned[ \t]*\n*', '', body, flags=re.I).strip()
+        stanzas = [(False, list(reversed([line.rstrip() for line in part.strip().split('\n')])))
+                   for part in reversed(re.split(r'\n[ \t]*\n', body))]
+        return title, author, stanzas
     byline = re.match(r"\*by ([^\n]+)\*\n+", text, flags=re.I)
     if not byline:
         raise ValueError("Missing byline in " + name)
@@ -60,7 +71,7 @@ def regenerate_page(path, names):
 
 
 def regenerate_animation(path):
-    title, author, stanzas = parse("among-sequoia-sempervirens.md")
+    title, author, stanzas = parse("among-sequoia-sempervirens-inverted.md")
     lines = [line for _, group in stanzas for line in group]
     source = path.read_text(encoding="utf-8")
     array = ",\n    ".join(json.dumps(line, ensure_ascii=False) for line in lines)

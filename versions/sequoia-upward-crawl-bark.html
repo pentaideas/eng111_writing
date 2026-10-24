@@ -227,11 +227,9 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
       <div class="choices">
         <a href="/eng111_writing/versions/sequoia-upward-crawl-v1.html">Version 1</a>
         <a href="/eng111_writing/versions/sequoia-upward-crawl-dusk.html">Version 2</a>
-        <a href="/eng111_writing/versions/sequoia-upward-crawl-bark.html" aria-current="page">Version 3</a>
         <a href="/eng111_writing/versions/sequoia-upward-crawl-signature.html">Version 4</a>
-        <a href="/eng111_writing/versions/random.html" data-random>Random version and color</a>
-        <a href="/eng111_writing/poems/among-sequoia-sempervirens.html">Read as a regular page</a>
-        <a href="/eng111_writing/">All poems</a>
+        <a href="/eng111_writing/poems/among-sequoia-sempervirens.html">Standard reading</a>
+        <a href="/eng111_writing/">All writing</a>
       </div>
     </details>
   </nav>
@@ -254,30 +252,30 @@ html, body { background:var(--page-bg) !important; color:var(--page-ink) !import
     Begin by scrolling down. The title stays with you until you reach the bottom.
     The author and “by” appear above the title. Scroll upward to read the poem from its first line
     to its last, with the title and byline remaining at the foot.
-    <p data-poem-summary>I stand / at the feet / of giants, / our moment / within their / millennia, / time / layered / beneath / furrowed / skin; / Overhead, / outstretched arms / become / a verdant firmament.</p>
+    <p data-poem-summary>I stand / at the feet / of giants, / our moment / overlaps / their millennia, / time / layered / beneath / furrowed / skin / overhead / outstretched arms / become / a verdant firmament</p>
   </div>
 </main>
-<script src="/eng111_writing/assets/poem-live.js"></script>
+<script src="/eng111_writing/assets/poem-live.js?v=sequoia-inverted-1"></script>
 <script>
 (async () => {
   'use strict';
   // POEM LINES START
-  const words = await window.PoemLive.lines('/eng111_writing/poems/among-sequoia-sempervirens.md', [
+  const words = await window.PoemLive.lines('/eng111_writing/poems/among-sequoia-sempervirens-inverted.md', [
     "I stand",
     "at the feet",
     "of giants,",
     "our moment",
-    "within their",
-    "millennia,",
+    "overlaps",
+    "their millennia,",
     "time",
     "layered",
     "beneath",
     "furrowed",
-    "skin;",
-    "Overhead,",
+    "skin",
+    "overhead",
     "outstretched arms",
     "become",
-    "a verdant firmament."
+    "a verdant firmament"
   ]);
   // POEM LINES END
   const track = document.getElementById('scroll-track');

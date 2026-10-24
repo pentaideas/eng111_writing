@@ -38,7 +38,7 @@ The main pages use a compact reading layout with flat color fields. Boston retai
 
 These pages and the homepage load `assets/reading-edition.css`. Sequoia uses the existing Redwood Bark upward-reading experiment; all four original experiments remain available unchanged.
 
-Markdown remains the source for published writing. Run `python3 tools/sync_poems.py` after text changes, then `python3 tools/sync_poems.py --check` to verify the generated pages. Marco’s layout and version menu are maintained in that script.
+Markdown remains the source for published writing. The four upward Sequoia readings use `poems/among-sequoia-sempervirens-inverted.md`: edit its verse in visual top-to-bottom order, keeping the author / by / title footer. The standard Sequoia page uses `poems/among-sequoia-sempervirens.md`, so the two drafts can differ. Run `python3 tools/sync_poems.py` after text changes, then `python3 tools/sync_poems.py --check` to verify the generated pages. Marco’s layout and version menu are maintained in that script.
 
 ## Rights
 
