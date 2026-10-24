@@ -1,7 +1,7 @@
 # Among Sequoia Sempervirens — inverted-page experiment
 
 
-a verdant firmament 
+a verdant firmament  
 become  
 outstretched arms  
 overhead
