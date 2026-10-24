@@ -2,18 +2,18 @@
 
 
 a verdant firmament  
-overhead
-skin
+overhead  
+skin  
 furrowed  
 beneath  
 layered  
 time  
-their millennia
-overlaps
-our moment  
-of giants 
-at the feet  
-I stand
+their millennia  
+overlaps  
+our moment   
+of giants  
+at the feet   
+I stand  
 
 michael penta  
 by  
