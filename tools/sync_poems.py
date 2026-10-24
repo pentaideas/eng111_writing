@@ -15,6 +15,12 @@ SOURCE = "/eng111_writing/poems/among-sequoia-sempervirens.md"
 def parse(name):
     text = (POEMS / name).read_text(encoding="utf-8-sig").replace("\r\n", "\n").strip()
     text = re.sub(r"^present center aligned\s*\n+", "", text, flags=re.I)
+    if name == "among-sequoia-sempervirens-inverted.md":
+        footer = re.search(r'\n([^\n]+)\nby[ \t]+([^\n]+)$', text, flags=re.I)
+        if footer:
+            title, author = (part.strip() for part in footer.groups())
+            body = re.sub(r'^# [^\n]+\n+', '', text[:footer.start()]).strip()
+            text = '# ' + title + '\n\n' + body + '\n\n' + author + '\nby\n' + title
     heading = re.match(r"# ([^\n]+)\n+", text)
     if not heading:
         raise ValueError("Missing poem heading in " + name)
@@ -104,7 +110,7 @@ def regenerate_inverted_page():
     page = page.replace('</head>', '<style>.inverted-signature{text-align:center;margin:24px auto 0;max-width:680px}'
                         '.inverted-signature p{font:20px/1.65 Georgia,serif;margin:6px 0 0}'
                         '.inverted-signature h1{font:400 clamp(22px,4vw,30px)/1.25 Georgia,serif;margin:0}</style></head>')
-    return page.replace('assets/poem-live.js"', 'assets/poem-live.js?v=sequoia-static-1"')
+    return page.replace('assets/poem-live.js"', 'assets/poem-live.js?v=sequoia-static-2"')
 
 
 def regenerate_animation(path):

@@ -4,6 +4,14 @@
   function parse(markdown, inverted = false) {
     let text = markdown.replace(/\r\n?/g, '\n').replace(/^\uFEFF/, '').trim();
     text = text.replace(/^present center aligned[ \t]*\n+/i, '');
+    if (inverted) {
+      const footer = text.match(/\n([^\n]+)\nby[ \t]+([^\n]+)$/i);
+      if (footer) {
+        const title = footer[1].trim(), author = footer[2].trim();
+        const body = text.slice(0, footer.index).replace(/^# [^\n]+\n+/, '').trim();
+        text = '# ' + title + '\n\n' + body + '\n\n' + author + '\nby\n' + title;
+      }
+    }
     const title = text.match(/^# ([^\n]+)\n+/);
     if (!title) throw new Error('Missing poem title');
     text = text.slice(title[0].length);
