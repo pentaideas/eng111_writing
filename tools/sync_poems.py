@@ -65,9 +65,9 @@ def replace_one(text, pattern, fn, label):
 
 def sequoia_readings(current="standard"):
     base = "/eng111_writing/"
-    items = [("standard", "poems/among-sequoia-sempervirens.html", "Standard"),
-             ("inverted", "poems/among-sequoia-sempervirens-inverted.html", "Static inverted"),
-             ("interactive", "versions/sequoia-upward-crawl-bark.html", "Interactive upward")]
+    items = [("standard", "poems/among-sequoia-sempervirens.html", "Read down"),
+             ("inverted", "poems/among-sequoia-sempervirens-inverted.html", "Read up"),
+             ("interactive", "versions/sequoia-upward-crawl-bark.html", "Look up")]
     links = [('<span aria-current="page">' + label + '</span>') if key == current else
              ('<a href="' + base + path + '">' + label + '</a>') for key, path, label in items]
     return ('<nav class="reading-meta sequoia-readings" aria-label="Sequoia readings">' +
