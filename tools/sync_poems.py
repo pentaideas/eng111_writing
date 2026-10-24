@@ -177,8 +177,6 @@ def main():
         POEMS / "olympic-v1.html":
             regenerate_page(POEMS / "olympic-v1.html", ["olympic-v1.md"]),
     }
-    upward = ROOT / "versions" / "sequoia-upward-reading.html"
-    targets[upward] = regenerate_page(upward, ["among-sequoia-sempervirens.md"])
     for name in ANIMATIONS:
         path = ROOT / "versions" / name
         targets[path] = regenerate_animation(path)
