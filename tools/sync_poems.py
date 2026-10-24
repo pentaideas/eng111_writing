@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POEMS = ROOT / "poems"
 ANIMATIONS = ["sequoia-upward-crawl-v1.html", "sequoia-upward-crawl-dusk.html",
               "sequoia-upward-crawl-bark.html", "sequoia-upward-crawl-signature.html"]
-SOURCE = "/eng111_writing/poems/among-sequoia-sempervirens-inverted.md"
+SOURCE = "/eng111_writing/poems/among-sequoia-sempervirens.md"
 
 def parse(name):
     text = (POEMS / name).read_text(encoding="utf-8-sig").replace("\r\n", "\n").strip()
@@ -70,8 +70,32 @@ def regenerate_page(path, names):
                        lambda m: m[1] + "\n" + content + "\n" + m[2], str(path))
 
 
-def regenerate_animation(path):
+def regenerate_inverted_page():
     title, author, stanzas = parse("among-sequoia-sempervirens-inverted.md")
+    visual = [(italic, list(reversed(lines))) for italic, lines in reversed(stanzas)]
+    page = (POEMS / "among-sequoia-sempervirens.html").read_text(encoding="utf-8")
+    page = page.replace('<title>', '<title>Inverted reading · ', 1)
+    page = re.sub(r'<meta name="description"[^>]*>',
+                  '<meta name="description" content="A static, bottom-to-top reading of Among Sequoia Sempervirens.">', page)
+    page = re.sub(r'<div class="reading-hero">.*?</div></div>', '', page, flags=re.S)
+    page = re.sub(r'<div class="reading-meta">.*?</div>',
+                  '<div class="reading-meta"><a href="/eng111_writing/poems/among-sequoia-sempervirens.html">Standard reading</a>'
+                  '<a href="/eng111_writing/versions/sequoia-upward-crawl-bark.html">Interactive upward reading</a></div>', page, flags=re.S)
+    page = page.replace('data-poem-source="/eng111_writing/poems/among-sequoia-sempervirens.md"',
+                        'data-poem-source="/eng111_writing/poems/among-sequoia-sempervirens-inverted.md" data-poem-order="inverted"')
+    page = replace_one(page, r'(<article class="verse[^"]*"[^>]*>).*?(</article>)',
+                       lambda m: m[1] + "\n" + render(visual) + "\n" + m[2], "inverted page")
+    signature = ('<header class="inverted-signature"><p><span data-inverted-author>' + html.escape(author) +
+                 '</span><br>by</p><h1 data-inverted-title>' + html.escape(title) + '</h1></header>')
+    page = page.replace('</article></main>', '</article>' + signature + '</main>')
+    page = page.replace('</head>', '<style>.inverted-signature{text-align:center;margin:24px auto 0;max-width:680px}'
+                        '.inverted-signature p{font:20px/1.65 Georgia,serif;margin:0}'
+                        '.inverted-signature h1{font:400 clamp(22px,4vw,30px)/1.25 Georgia,serif;margin:12px 0 0}</style></head>')
+    return page.replace('assets/poem-live.js"', 'assets/poem-live.js?v=sequoia-static-1"')
+
+
+def regenerate_animation(path):
+    title, author, stanzas = parse("among-sequoia-sempervirens.md")
     lines = [line for _, group in stanzas for line in group]
     source = path.read_text(encoding="utf-8")
     array = ",\n    ".join(json.dumps(line, ensure_ascii=False) for line in lines)
@@ -151,6 +175,7 @@ def main():
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     targets = {
+        POEMS / "among-sequoia-sempervirens-inverted.html": regenerate_inverted_page(),
         POEMS / "among-sequoia-sempervirens.html":
             regenerate_page(POEMS / "among-sequoia-sempervirens.html",
                             ["among-sequoia-sempervirens.md"]),

@@ -56,10 +56,13 @@
   async function updateReading(element) {
     try {
       const poem = await load(element.dataset.poemSource);
-      const nodes = poem.stanzas.map(stanza => {
+      const inverted = element.dataset.poemOrder === 'inverted';
+      const stanzas = inverted ? [...poem.stanzas].reverse() : poem.stanzas;
+      const nodes = stanzas.map(stanza => {
         const block = document.createElement('p');
         block.className = 'stanza' + (stanza.italic ? ' stanza--italic' : '');
-        stanza.lines.forEach(line => {
+        const lines = inverted ? [...stanza.lines].reverse() : stanza.lines;
+        lines.forEach(line => {
           const span = document.createElement('span');
           span.className = 'poem-line';
           span.textContent = line;
@@ -68,6 +71,10 @@
         return block;
       });
       if (nodes.length) element.replaceChildren(...nodes);
+      if (inverted) {
+        document.querySelector('[data-inverted-author]').textContent = poem.author;
+        document.querySelector('[data-inverted-title]').textContent = poem.title;
+      }
     } catch (error) {
       console.warn('Using published poem fallback:', error);
     }
