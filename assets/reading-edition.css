@@ -1,5 +1,5 @@
-/* Reading edition. Only linked by the home, Boston, Olympic and Marco pages.
-   Sequoia's markup and shared stylesheet are deliberately unchanged. */
+/* Main reading pages share one compact typographic system.
+   The earlier interactive experiments keep their own styles. */
 .edition{--edition-measure:850px;--edition-body:680px;--edition-gap:clamp(24px,5vw,48px)}
 .edition .site-divider{display:none}
 .edition .site-header{padding-block:24px}
@@ -12,7 +12,10 @@
 .edition .reading-hero__inner{width:min(var(--edition-measure),100%)}
 .edition .reading-hero h1{max-width:100%;margin:0;font-size:clamp(36px,5.2vw,68px);line-height:1.05;letter-spacing:-.045em;text-wrap:balance}
 .edition .reading-hero .author{margin:20px 0 0;font:16px/1.5 Georgia,"Times New Roman",serif;opacity:1}
-.edition.theme-boston .reading-hero{background:#172b47;color:#faf7f1}
+.edition.theme-boston{--boston-navy:#0c2340;--boston-red:#bd3039;--ink:var(--boston-navy);--focus:var(--boston-red)}
+.edition.theme-boston .reading-hero{background:var(--boston-navy);color:#faf7f1;border-bottom:12px solid var(--boston-red)}
+.edition.theme-boston .site-nav a[aria-current="page"]{color:var(--boston-red)}
+.edition.theme-sequoia .reading-hero{background:#e3e9d8;color:#294433}
 .edition.theme-olympic .reading-hero{background:#203f31;color:#f1f5ee}
 .edition.theme-story:not(.marco-experiment):not(.marco-smooth) .reading-hero{background:var(--story-header);color:var(--story-header-ink)}
 .edition .reading-main{width:min(898px,100%);padding:28px 24px 80px}
@@ -40,22 +43,26 @@
 .edition.theme-home .experiment-invitation{border:0;background:#e5ebe3;padding:22px 26px;margin-bottom:32px}
 .edition.theme-home .experiment-invitation>p:first-child{font:400 25px/1.2 Georgia,"Times New Roman",serif;margin:0 0 12px}
 .edition.theme-home .experiment-invitation p{font-size:15px}
-/* Keep the Sequoia cover and its internal typography exactly as before. */
-.edition.theme-home .poem-card--boston,.edition.theme-home .poem-card--olympic,.edition.theme-home .poem-card--story{border:0;border-radius:0;box-shadow:none;transition:transform 180ms ease}
-.edition.theme-home .poem-card--boston{background:#172b47}
-.edition.theme-home .poem-card--boston:after{display:none}
+.edition.theme-home .poem-card{border:0;border-radius:0;box-shadow:none;transition:transform 180ms ease}
+.edition.theme-home .poem-card--sequoia{background:#e3e9d8;color:#294433}
+.edition.theme-home .poem-card--boston{background:#0c2340}
+.edition.theme-home .poem-card--boston:after{display:block;height:12px;background:#bd3039}
+.edition.theme-home .poem-card--boston .read-link{align-self:flex-start;background:#bd3039;color:#fff;padding:10px 14px}
 .edition.theme-home .poem-card--olympic{background:#ccdfcd}
-.edition.theme-home .poem-card--boston h3,.edition.theme-home .poem-card--olympic h3{margin-top:0;font-size:clamp(30px,3.25vw,43px);min-height:2.16em}
-.edition.theme-home .poem-card--boston a,.edition.theme-home .poem-card--olympic a{justify-content:center}
+.edition.theme-home .poem-card--sequoia h3,.edition.theme-home .poem-card--boston h3,.edition.theme-home .poem-card--olympic h3{margin-top:0;font-size:clamp(30px,3.25vw,43px);min-height:2.16em}
+.edition.theme-home .poem-card--sequoia a,.edition.theme-home .poem-card--boston a,.edition.theme-home .poem-card--olympic a{justify-content:center}
 .edition.theme-home .poem-card--story{background:#e4d9cb;min-height:240px}
 .edition.theme-home .poem-card--story h3{margin-top:16px;max-width:720px;text-wrap:balance}
 .edition.theme-home .poem-card--story .work-kind{font:15px/1.5 system-ui,sans-serif;margin:0}
 .edition.theme-home .poem-card--story .excerpt{font-size:19px}
 .edition.theme-home .stories-section{margin-top:54px}
 .edition a:hover{text-decoration-thickness:2px}
+.edition.theme-sequoia .reading-actions{border:0;padding:0}
+.edition.theme-sequoia .reading-actions p{margin:18px 0 0}
+.edition.theme-sequoia .reading-actions a{font-size:15px}
 @media(max-width:760px){
-  .edition.theme-home .poem-card--boston,.edition.theme-home .poem-card--olympic{min-height:250px}
-  .edition.theme-home .poem-card--boston h3,.edition.theme-home .poem-card--olympic h3{min-height:0}
+  .edition.theme-home .poem-card{min-height:250px}
+  .edition.theme-home .poem-card--sequoia h3,.edition.theme-home .poem-card--boston h3,.edition.theme-home .poem-card--olympic h3{min-height:0}
 }
 @media(max-width:480px){
   .edition .site-header{padding:20px 24px 16px}
@@ -73,7 +80,7 @@
   .edition.theme-home .experiment-invitation{padding:20px}
 }
 @media(prefers-reduced-motion:reduce){
-  .edition.theme-home .poem-card--boston,.edition.theme-home .poem-card--olympic,.edition.theme-home .poem-card--story{transition:none;transform:none}
+  .edition.theme-home .poem-card{transition:none;transform:none}
 }
 @media print{
   .edition .reading-versions,.edition .site-header,.edition .reading-meta{display:none}

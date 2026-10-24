@@ -19,7 +19,9 @@ An archive of drafts of original poems and short fiction for ENG 111.
 
 I wanted *Among Sequoia Sempervirens* to be read from the bottom up, reflecting the action of looking up a tree. I’ve kept four versions as I work toward that experience, each with a choice of three color schemes.
 
-**[Try Them all](https://pentaideas.github.io/eng111_writing/versions/random.html)**
+**[Read upward](https://pentaideas.github.io/eng111_writing/versions/sequoia-upward-reading.html)** — the new default opens at the foot of the poem and uses native upward scrolling. Title and author stay beneath the verse, in a separate area. Redwood Bark is the default color; other palettes and earlier experiments are in the Readings menu. No start button or instruction overlay.
+
+[Try the earlier experiments](https://pentaideas.github.io/eng111_writing/versions/random.html)
 
 ### Darkness Consumes
 
@@ -34,9 +36,9 @@ Scroll back up to reverse the effect, or use the on/off button.
 
 ## Reading pages
 
-Boston, Olympic, and Marco use a compact reading layout with flat color fields. Marco recommends Lantern fades; the expandable reading menu retains all four experiments and the standard page. Olympic opens Version 2, with Version 1 available as an alternate draft.
+The main pages use a compact reading layout with flat color fields. Boston retains its intentional Red Sox navy and red. Marco recommends Lantern fades; the expandable reading menu retains all four experiments and the standard page. Olympic opens Version 2, with Version 1 available as an alternate draft.
 
-These pages and the homepage load `assets/reading-edition.css`. Sequoia keeps its existing pages, experiments, and styling.
+These pages and the homepage load `assets/reading-edition.css`. The new Sequoia upward reading uses `assets/sequoia-upward.css` and `assets/sequoia-upward.js`; the four earlier experiments remain available unchanged.
 
 Markdown remains the source for published writing. Run `python3 tools/sync_poems.py` after text changes, then `python3 tools/sync_poems.py --check` to verify the generated pages. Marco’s layout and version menu are maintained in that script.
 

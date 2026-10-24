@@ -13,6 +13,8 @@ on:
       - 'assets/marco-experiments.css'
       - 'assets/marco-smooth.js'
       - 'assets/marco-smooth.css'
+      - 'assets/sequoia-upward.js'
+      - 'assets/sequoia-upward.css'
       - '.github/workflows/sync-poems.yml'
   workflow_dispatch:
 
@@ -39,6 +41,7 @@ jobs:
           node --check assets/story-theme.js
           node --check assets/marco-experiments.js
           node --check assets/marco-smooth.js
+          node --check assets/sequoia-upward.js
       - name: Commit generated pages
         run: |
           git config user.name "github-actions[bot]"
@@ -46,6 +49,7 @@ jobs:
           git add stories/the-unlikely-death-of-marco-fragale.html
           git add versions/marco-fading-light.html versions/marco-rising-darkness.html
           git add versions/marco-lantern-fades.html versions/marco-soft-tide.html
+          git add versions/sequoia-upward-reading.html
           git add poems/among-sequoia-sempervirens.html poems/boston-proper.html poems/olympic.html poems/olympic-v1.html
           git add versions/sequoia-upward-crawl-v1.html versions/sequoia-upward-crawl-dusk.html
           git add versions/sequoia-upward-crawl-bark.html versions/sequoia-upward-crawl-signature.html
