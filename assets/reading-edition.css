@@ -21,6 +21,7 @@
 .edition .verse{width:min(100%,var(--edition-body))}
 .edition .prose{font-size:clamp(19px,2.2vw,21px);line-height:1.7}
 .edition .reading-versions{width:min(var(--edition-measure),calc(100% - 48px));margin:26px auto 0;font:15px/1.65 system-ui,sans-serif}
+.edition.marco-smooth>.reading-versions{position:relative;z-index:1}
 .edition .reading-versions p{margin:0 0 8px}
 .edition .reading-versions a{text-underline-offset:4px}
 .edition .reading-versions p a{font-weight:650}
