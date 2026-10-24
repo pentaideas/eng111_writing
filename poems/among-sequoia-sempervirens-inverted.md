@@ -2,18 +2,16 @@
 
 
 a verdant firmament  
-become  
-outstretched arms  
 overhead
 skin
 furrowed  
 beneath  
 layered  
 time  
-their millennia,  
+their millennia
 overlaps
 our moment  
-of giants,  
+of giants 
 at the feet  
 I stand
 
