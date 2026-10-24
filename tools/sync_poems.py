@@ -89,9 +89,9 @@ def regenerate_story(path):
     body = "\n".join("<p>" + html.escape(part, quote=False) + "</p>" for part in paragraphs)
     base = "/eng111_writing/"
     page = f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><script src="{base}assets/story-theme.js?v=2"></script><link rel="stylesheet" href="{base}assets/poems.css?v=marco-2"><link rel="stylesheet" href="{base}assets/reading-edition.css?v=20261024-3"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><script src="{base}assets/story-theme.js?v=2"></script><link rel="stylesheet" href="{base}assets/poems.css?v=marco-2"><link rel="stylesheet" href="{base}assets/reading-edition.css?v=20261024-5"></head>
 <body class="theme-story edition"><header class="site-header"><a class="site-brand" href="{base}"><span class="site-brand__name">Michael Penta</span><span class="site-brand__sub">ENG 111 · Writing</span></a><nav class="site-nav" aria-label="Writing pages"><a href="{base}">Writing</a><a href="{base}poems/among-sequoia-sempervirens.html">Sequoia</a><a href="{base}poems/boston-proper.html">Boston</a><a href="{base}poems/olympic.html">Olympic</a><a href="{base}stories/{path.name}" aria-current="page">Marco Fragale</a></nav></header><hr class="site-divider">
-<div class="reading-hero"><div class="reading-hero__inner"><h1>{title}</h1><p class="author">by {author} · Short story</p></div></div>
+<div class="reading-hero"><div class="reading-hero__inner"><h1>{title}</h1><p class="author">by {author}</p></div></div>
 {story_experiments()}
 <main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><label class="story-theme-control" hidden for="story-theme">Theme <select id="story-theme"><option value="molasses">Molasses flood</option><option value="lantern">Lantern light</option><option value="north-end">Old North End</option></select></label></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
 {body}
@@ -110,20 +110,18 @@ def story_experiments(current="standard"):
              ("tide", "versions/marco-soft-tide.html", "Soft tide")]
     links = []
     for key, path, label in items:
-        if key != current:
+        if key == current:
+            links.append('<span aria-current="page">' + label + '</span>')
+        else:
             links.append('<a href="' + base + path + '">' + label + '</a>')
-    invitation = ('<p>Read it another way. <a href="' + base + 'versions/marco-lantern-fades.html">'
-                  'Try Lantern fades</a> — a warm glow slowly goes out.</p>') if current == "standard" else ''
-    return ('<aside class="reading-versions" id="reading-versions" aria-label="Other ways to read Marco Fragale">'
-            + invitation + '<details><summary>Other readings</summary>'
-            '<nav aria-label="Marco reading versions">' + ''.join(links) + '</nav></details></aside>')
+    separator = '<span aria-hidden="true">·</span>'
+    return ('<aside class="reading-versions" id="reading-versions">'
+            '<nav aria-label="Marco reading versions">' + separator.join(links) + '</nav></aside>')
 
 
 def regenerate_smooth_story(story, effect):
     page = regenerate_story(story)
     title = "Lantern fades" if effect == "lantern" else "Soft tide"
-    note = ("The lantern’s glow slowly fades as you read." if effect == "lantern" else
-            "A soft tide of darkness rises as you read.")
     page = page.replace('<title>', '<title>' + title + ' · ', 1)
     page = page.replace('<body class="theme-story edition">',
                         '<body class="theme-story edition marco-smooth" data-effect="' + effect + '">', 1)
@@ -132,10 +130,6 @@ def regenerate_smooth_story(story, effect):
                         '<script defer src="/eng111_writing/assets/marco-smooth.js?v=1"></script></head>')
     page = re.sub(r'<label class="story-theme-control".*?</label>', '', page)
     page = page.replace(story_experiments(), story_experiments(effect))
-    page = page.replace(' · Short story</p>', ' · ' + title + '</p>')
-    page = page.replace('<article class="prose"', '<p class="marco-reading-note">' + note +
-                        ' Scroll back up to bring the light back.</p><noscript><p>The scroll effect needs JavaScript.</p></noscript>'
-                        '<article class="prose"', 1)
     page = page.replace('</body>', '<div class="marco-scene" aria-hidden="true"><div class="marco-glow"></div>'
                         '<div class="marco-tide"></div></div>'
                         '<button class="marco-smooth-toggle" type="button" hidden aria-pressed="true">Effect on</button></body>')

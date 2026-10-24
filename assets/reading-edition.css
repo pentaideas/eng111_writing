@@ -32,7 +32,8 @@
 .edition .reading-versions summary:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
 .edition .reading-versions nav{display:flex;flex-wrap:wrap;gap:8px 24px;padding:10px 0 16px}
 .edition .reading-versions nav a{display:inline-flex;align-items:center;min-height:44px}
-.edition .reading-versions a[aria-current="page"]{font-weight:700;text-decoration-thickness:3px}
+.edition .reading-versions [aria-current="page"]{font-weight:700}
+.edition .reading-versions nav span{display:inline-flex;align-items:center;min-height:44px}
 .edition .marco-reading-note{width:min(100%,var(--edition-body));margin:0 auto 30px;font:15px/1.7 system-ui,sans-serif;color:var(--subtle)}
 .edition.marco-smooth .reading-hero,.edition.marco-experiment .reading-hero{padding:40px 24px 30px;background:transparent;color:var(--ink);border:0}
 .edition .marco-toggle,.edition .marco-smooth-toggle{border:0;border-radius:0;box-shadow:none}
