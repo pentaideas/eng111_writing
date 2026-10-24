@@ -89,11 +89,11 @@ def regenerate_story(path):
     body = "\n".join("<p>" + html.escape(part, quote=False) + "</p>" for part in paragraphs)
     base = "/eng111_writing/"
     page = f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><script src="{base}assets/story-theme.js"></script><link rel="stylesheet" href="{base}assets/poems.css?v=marco-2"><link rel="stylesheet" href="{base}assets/reading-edition.css?v=20261024-3"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="{title}, a short story by {author}."><title>{title} — {author}</title><script src="{base}assets/story-theme.js?v=2"></script><link rel="stylesheet" href="{base}assets/poems.css?v=marco-2"><link rel="stylesheet" href="{base}assets/reading-edition.css?v=20261024-3"></head>
 <body class="theme-story edition"><header class="site-header"><a class="site-brand" href="{base}"><span class="site-brand__name">Michael Penta</span><span class="site-brand__sub">ENG 111 · Writing</span></a><nav class="site-nav" aria-label="Writing pages"><a href="{base}">Writing</a><a href="{base}poems/among-sequoia-sempervirens.html">Sequoia</a><a href="{base}poems/boston-proper.html">Boston</a><a href="{base}poems/olympic.html">Olympic</a><a href="{base}stories/{path.name}" aria-current="page">Marco Fragale</a></nav></header><hr class="site-divider">
 <div class="reading-hero"><div class="reading-hero__inner"><h1>{title}</h1><p class="author">by {author} · Short story</p></div></div>
 {story_experiments()}
-<main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><label class="story-theme-control" hidden for="story-theme">Theme <select id="story-theme"><option value="molasses">Molasses flood</option><option value="lantern">Lantern light</option><option value="north-end">Old North End</option><option value="harbor">Winter harbor</option></select></label></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
+<main class="reading-main"><div class="reading-meta"><a href="{base}">← All writing</a><label class="story-theme-control" hidden for="story-theme">Theme <select id="story-theme"><option value="molasses">Molasses flood</option><option value="lantern">Lantern light</option><option value="north-end">Old North End</option></select></label></div><article class="prose" aria-label="{title}" data-story-source="{base}stories/{path.stem}.md">
 {body}
 </article></main>
 <footer class="site-footer"><p>© Michael Penta. All rights reserved.</p><p><a href="{base}">All writing</a> · <a href="https://github.com/pentaideas/eng111_writing">GitHub</a></p></footer><script src="{base}assets/poem-live.js"></script></body></html>
@@ -127,7 +127,7 @@ def regenerate_smooth_story(story, effect):
     page = page.replace('<title>', '<title>' + title + ' · ', 1)
     page = page.replace('<body class="theme-story edition">',
                         '<body class="theme-story edition marco-smooth" data-effect="' + effect + '">', 1)
-    page = page.replace('<script src="/eng111_writing/assets/story-theme.js"></script>', '')
+    page = page.replace('<script src="/eng111_writing/assets/story-theme.js?v=2"></script>', '')
     page = page.replace('</head>', '<link rel="stylesheet" href="/eng111_writing/assets/marco-smooth.css?v=1">'
                         '<script defer src="/eng111_writing/assets/marco-smooth.js?v=1"></script></head>')
     page = re.sub(r'<label class="story-theme-control".*?</label>', '', page)

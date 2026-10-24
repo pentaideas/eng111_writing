@@ -1,7 +1,7 @@
 /* Theme choice is local to this reader's browser. */
 (() => {
   'use strict';
-  const themes = ['molasses', 'lantern', 'north-end', 'harbor'];
+  const themes = ['molasses', 'lantern', 'north-end'];
   const key = 'eng111-marco-theme';
   let selected = 'molasses';
   try {
