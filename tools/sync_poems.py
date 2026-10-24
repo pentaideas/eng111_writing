@@ -66,7 +66,7 @@ def replace_one(text, pattern, fn, label):
 def sequoia_readings(current="standard"):
     base = "/eng111_writing/"
     items = [("standard", "poems/among-sequoia-sempervirens.html", "Read down"),
-             ("inverted", "poems/among-sequoia-sempervirens-inverted.html", "Read up"),
+             ("inverted", "poems/among-sequoia-sempervirens-inverted.html", "Bidirectional"),
              ("interactive", "versions/sequoia-upward-crawl-bark.html", "Look up")]
     links = [('<span aria-current="page">' + label + '</span>') if key == current else
              ('<a href="' + base + path + '">' + label + '</a>') for key, path, label in items]
@@ -98,12 +98,12 @@ def regenerate_inverted_page():
                         'data-poem-source="/eng111_writing/poems/among-sequoia-sempervirens-inverted.md" data-poem-order="inverted"')
     page = replace_one(page, r'(<article class="verse[^"]*"[^>]*>).*?(</article>)',
                        lambda m: m[1] + "\n" + render(visual) + "\n" + m[2], "inverted page")
-    signature = ('<header class="inverted-signature"><p><span data-inverted-author>' + html.escape(author) +
-                 '</span><br>by</p><h1 data-inverted-title>' + html.escape(title) + '</h1></header>')
+    signature = ('<header class="inverted-signature"><h1 data-inverted-title>' + html.escape(title) +
+                 '</h1><p>by <span data-inverted-author>' + html.escape(author) + '</span></p></header>')
     page = page.replace('</article></main>', '</article>' + signature + '</main>')
     page = page.replace('</head>', '<style>.inverted-signature{text-align:center;margin:24px auto 0;max-width:680px}'
-                        '.inverted-signature p{font:20px/1.65 Georgia,serif;margin:0}'
-                        '.inverted-signature h1{font:400 clamp(22px,4vw,30px)/1.25 Georgia,serif;margin:12px 0 0}</style></head>')
+                        '.inverted-signature p{font:20px/1.65 Georgia,serif;margin:6px 0 0}'
+                        '.inverted-signature h1{font:400 clamp(22px,4vw,30px)/1.25 Georgia,serif;margin:0}</style></head>')
     return page.replace('assets/poem-live.js"', 'assets/poem-live.js?v=sequoia-static-1"')
 
 
