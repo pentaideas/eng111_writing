@@ -20,7 +20,7 @@ disturbs the drumming of rain
 on the taut nylon tent.  
   
 "Dude. 
-We are in a rainforest. 
+We're in a rainforest. 
 Remember?"
   
 Beneath moss-cloaked branches  
