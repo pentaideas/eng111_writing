@@ -5,28 +5,32 @@
 Yesterday,  
 a scrim of trees staged along the roadway  
 masked the massacre of their cousins.  
-You gasped,  
+  
+You gasped.  
+I turned to your face  
 weighted with grief.  
-I turned to your face.  
 Your mourning  
 tightened and twisted in my stomach.  
-
+  
 This morning,  
-mist veils a mountain lake  
+mist screens a mountain lake  
 fringed with fir and hemlock.  
 My groan  
 disturbs the drumming of rain  
 on the taut nylon tent.  
-"Dude, you invited me to a rainforest, remember?"
-
+  
+"Dude. 
+We are in a rainforest. 
+Remember?"
+  
 Beneath moss-cloaked branches  
 we walk as mammals  
 among outstretched ferns.
-
+  
 For days,  
 you, me,  
 and verdancy.
-
+  
 At the coast,    
 gray rock,   
 sea stacks crowned with spruce,  
