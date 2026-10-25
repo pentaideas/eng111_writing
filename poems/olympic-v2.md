@@ -19,9 +19,9 @@ My groan
 disturbs the drumming of rain  
 on the taut nylon tent.  
   
-"Dude. 
-We're in a rainforest. 
-Remember?"
+"Dude.  
+We're in a rainforest.  
+Remember?"  
   
 Beneath moss-cloaked branches  
 we walk as mammals  
