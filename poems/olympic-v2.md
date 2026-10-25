@@ -31,7 +31,7 @@ among outstretched ferns
 You, me,  
 and verdancy  
   
-until the coast.  
+to the coast.  
 Gray rock,   
 sea stacks crowned with spruce.  
 Pacific tides  
