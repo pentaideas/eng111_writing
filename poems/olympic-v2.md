@@ -17,10 +17,10 @@ mist screens a mountain lake
 fringed with fir and hemlock.  
 My groan  
 disturbs the drumming of rain  
-on the taut nylon tent.  
+on the taut nylon tent. 
   
-"Dude.  
-We're in a rainforest.  
+You rib    
+"Rainforest.  
 Remember?"  
   
 Beneath moss-cloaked branches  
