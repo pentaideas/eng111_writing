@@ -15,26 +15,26 @@ tightened and twisted in my stomach.
 This morning,  
 mist screens a mountain lake  
 fringed with fir and hemlock.  
+  
 My groan  
 disturbs the drumming of rain  
-on the taut nylon tent. 
+on the taut nylon tent.  
   
-You rib    
+You tease,  
 "Rainforest.  
 Remember?"  
   
 Beneath moss-cloaked branches  
-we walk as mammals  
-among outstretched ferns.
+we walk as mammals   
+among outstretched ferns  
   
-For days,  
-you, me,  
-and verdancy.
+You, me,  
+and verdancy  
   
-At the coast,    
-gray rock,   
-sea stacks crowned with spruce,  
+until the coast.  
+Gray rock,   
+sea stacks crowned with spruce.  
 Pacific tides  
 washing up trunks of driftwood.  
 We climb the stark white, sun-dried bodies  
-of our fallen friends.
+of our friends.  
