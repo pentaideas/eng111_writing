@@ -7,7 +7,7 @@ a scrim of trees staged along the roadway
 masked the massacre of their cousins.  
   
 You gasped.  
-I turned to your face. 
+I turned to your face 
 weighted with grief.  
 Your mourning  
 tightened and twisted in my stomach.  
